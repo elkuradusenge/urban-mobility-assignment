@@ -51,6 +51,13 @@ new-clean-dataset/
 old-original/
 taxi_zones/
 
+# Data Cleanup Pipeline Generated Files
+data/clean_data/integrated_trip_data.parquet
+data/clean_data/clean_tripdata_2019-01.csv
+data/clean_data/tripdata.parquet
+data/clean_data/data_quality_report.txt
+data/clean_data/clean_taxi_zone_data.csv
+
 # Generated Analysis Results (optional - uncomment if you want to track these)
 # analysis_results/
 # processing_checkpoint.json

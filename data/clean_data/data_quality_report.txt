@@ -1,0 +1,22 @@
+DATA QUALITY REPORT
+======================================================================
+Generated: 2026-02-17 21:53:11
+
+Missing Values Analysis:
+Initial rows: 1,000
+  Filled 1000 congestion_surcharge with 0
+Final rows after missing value handling: 1,000
+
+Duplicates Removed: 0
+Rows after duplicate removal: 1,000
+
+Outlier Detection:
+  Distance outliers removed: 6
+  Fare outliers removed: 0
+  Passenger count outliers removed: 8
+  Temporal outliers removed: 7
+  Total amount mismatches removed: 8
+
+Total outliers removed: 29 (2.90%)
+Final rows: 971
+
