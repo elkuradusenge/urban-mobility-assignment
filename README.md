@@ -8,6 +8,7 @@
 - With Node.js installed, install all the packages with `npm install`
 - Run `node server.js` to start the server at `http://localhost:3000`
 - On server start up the database will be initiated with tables and seed data. To demonstrate make a GET HTTP request to `/locations` to retrieve all locations in the database
+- We are using `SQLite` as the database
 
 ## File structure
 - Data cleaning is handled in `data` directory with Python
