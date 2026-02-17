@@ -1,0 +1,13 @@
+{
+    "last_chunk": 153,
+    "timestamp": "2026-02-17T13:15:03.714655",
+    "stats": {
+        "initial_total_records": 7667792,
+        "missing_values": 0,
+        "duplicates": 0,
+        "outliers_distance": 54802,
+        "outliers_fare": 6589,
+        "outliers_time": 20752,
+        "final_clean_records": 7585649
+    }
+}

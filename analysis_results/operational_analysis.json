@@ -1,0 +1,80 @@
+{
+    "total_records": 7585649,
+    "distance_metrics": {
+        "total_miles": 21373417.64,
+        "average_distance": 2.82,
+        "percentiles": {
+            "25th": 0.92,
+            "50th": 1.53,
+            "75th": 2.8,
+            "95th": 10.59
+        }
+    },
+    "duration_metrics": {
+        "total_minutes": 97973874.55,
+        "total_hours": 1632897.91,
+        "average_duration_minutes": 12.92,
+        "percentiles": {
+            "25th": 6.183333333333334,
+            "50th": 10.216666666666669,
+            "75th": 16.583333333333332,
+            "95th": 32.333333333333336
+        }
+    },
+    "speed_metrics": {
+        "average_speed_mph": 13.24,
+        "percentiles": {
+            "25th": 7.6422073502722325,
+            "50th": 10.095589527323845,
+            "75th": 13.731343283582088,
+            "95th": 24.86928333898452
+        }
+    },
+    "passenger_metrics": {
+        "average_passengers": 1.57,
+        "distribution": {
+            "0 passengers": {
+                "count": 115571,
+                "percentage": 1.52
+            },
+            "1 passenger": {
+                "count": 5395080,
+                "percentage": 71.12
+            },
+            "2 passengers": {
+                "count": 1103760,
+                "percentage": 14.55
+            },
+            "3 passengers": {
+                "count": 311937,
+                "percentage": 4.11
+            },
+            "4 passengers": {
+                "count": 139449,
+                "percentage": 1.84
+            },
+            "5 passengers": {
+                "count": 320765,
+                "percentage": 4.23
+            },
+            "6 passengers": {
+                "count": 199071,
+                "percentage": 2.62
+            },
+            "7 passengers": {
+                "count": 6,
+                "percentage": 0.0
+            },
+            "8 passengers": {
+                "count": 9,
+                "percentage": 0.0
+            },
+            "9 passengers": {
+                "count": 1,
+                "percentage": 0.0
+            }
+        },
+        "most_common": 1,
+        "most_common_count": 5395080
+    }
+}
