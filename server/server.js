@@ -1,9 +1,11 @@
 const http = require('http');
 const router = require('./src/routes/router');
 const { initDb } = require('./src/db/db');
+const { seedIfEmpty } = require('./src/db/seed');
 
 // Initialize Database
 initDb();
+seedIfEmpty();
 
 const PORT = process.env.PORT || 3000;
 
