@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Large Data Files
+# *.csv
+*.parquet
+*.parquet.gzip
+*.gz
+*.zip
+*.tar
+*.tar.gz
+
+# Shapefile components (large GIS files)
+*.shp
+*.shx
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.shp.xml
+
+# Data Directories
+new-clean-dataset/
+old-original/
+taxi_zones/
+
+# Data Cleanup Pipeline Generated Files
+data/clean_data/integrated_trip_data.parquet
+data/clean_data/clean_tripdata_2019-01.csv
+data/clean_data/tripdata.parquet
+data/clean_data/data_quality_report.txt
+data/clean_data/clean_taxi_zone_data.csv
+
+# Generated Analysis Results (optional - uncomment if you want to track these)
+# analysis_results/
+# processing_checkpoint.json
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# Large output files
+*.xlsx
+*.xls
