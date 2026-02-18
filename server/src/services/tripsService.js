@@ -3,7 +3,14 @@ import locationRepository from "../repositories/locationRepository.js";
 import vendorsRepository from "../repositories/vendorsRepository.js";
 
 const getAllTrips = () => {
-  return tripsRepository.findAll();
+  const trips = tripsRepository.findAll();
+
+  return trips.map((trip) => ({
+    ...trip,
+    vendor: vendorsRepository.findById(trip.vendor_id) || null,
+    pickup_location: locationRepository.findById(trip.pickup_location_id) || null,
+    dropoff_location: locationRepository.findById(trip.dropoff_location_id) || null,
+  }));
 };
 
 const getTripById = (id) => {
@@ -45,21 +52,52 @@ const createTrip = (trip) => {
   return { ...trip, id };
 };
 
+const normalizeTripPatch = (tripData) => {
+  const allowedFields = new Set([
+    "vendor_id",
+    "pickup_datetime",
+    "dropoff_datetime",
+    "passenger_count",
+    "trip_distance",
+    "mta_tax",
+    "pickup_location_id",
+    "dropoff_location_id",
+    "tip_amount",
+    "fare_amount",
+    "total_amount"
+  ]);
+
+  const patch = {};
+
+  for (const [key, value] of Object.entries(tripData || {})) {
+    if (!allowedFields.has(key)) continue;
+    if (value === undefined) continue;
+    patch[key] = value;
+  }
+
+  return patch;
+};
+
 const updateTrip = (id, tripData) => {
   const existing = tripsRepository.findById(id);
   if (!existing) return undefined;
 
-  validateForeignKeys(tripData);
+  const patch = normalizeTripPatch(tripData);
+  if (Object.keys(patch).length === 0) {
+    throw new Error("No valid fields provided for update");
+  }
 
-  tripsRepository.update(id, tripData);
-  return { ...existing, ...tripData };
+  validateForeignKeys(patch);
+
+  tripsRepository.update(id, patch);
+  return tripsRepository.findById(id) || { ...existing, ...patch };
 };
 
 const deleteTrip = (id) => {
-  const existing = tripsRepository.findById(id);
+  const existing = tripsRepository.findById(Number(id));
   if (!existing) return false;
 
-  tripsRepository.deleteById(id);
+  tripsRepository.deleteById(Number(id));
   return true;
 };
 
