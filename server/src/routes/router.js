@@ -2,6 +2,7 @@ import locationsRouter from "./locationsRouter.js";
 import vendorsRouter from "./vendorsRouter.js";
 import paymentsRouter from "./paymentsRouter.js";
 import tripsRouter from "./tripsRouter.js";
+import docsRouter from "./docsRouter.js";
 
 const router = async (req, res) => {
   const url = req.url;
@@ -20,6 +21,12 @@ const router = async (req, res) => {
   if (method === "OPTIONS") {
     res.writeHead(204);
     res.end();
+    return;
+  }
+
+  // Swagger Documentation
+  if (url?.startsWith("/api-docs")) {
+    docsRouter(req, res);
     return;
   }
 
