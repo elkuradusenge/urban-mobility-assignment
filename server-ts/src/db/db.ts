@@ -22,7 +22,7 @@ export const initDb = (): void => {
   db.prepare(
     `
         CREATE TABLE IF NOT EXISTS vendors (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             email TEXT,
             phone_number TEXT

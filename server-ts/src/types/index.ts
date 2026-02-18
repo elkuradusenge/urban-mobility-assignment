@@ -6,7 +6,7 @@ export interface Location {
 }
 
 export interface Vendor {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   phone_number: string;
