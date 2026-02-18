@@ -1,11 +1,21 @@
 import http, { IncomingMessage, ServerResponse } from "http";
+import { initDb } from "./db/db";
+import { seedIfEmpty } from "./db/seed";
+import router from "./routes/router";
+
+// Initialize Database
+try {
+  initDb();
+  seedIfEmpty();
+} catch (error) {
+  console.error("Database initialization failed:", error);
+}
 
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(
   (req: IncomingMessage, res: ServerResponse) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Server is running via TypeScript!");
+    router(req, res);
   },
 );
 
