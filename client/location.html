@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location Management</title>
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/locations.css">
+</head>
+<body data-page-title="Location Management">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">TB</div>
+        <span>TransBook</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="./index.html">Overview</a>
+        <a class="nav-item" href="./trips.html">Trips</a>
+        <a class="nav-item" href="./vendors.html">Vendors</a>
+        <a class="nav-item" href="./payment.html">Payments</a>
+        <a class="nav-item" href="./location.html">Locations</a>
+      </nav>
+      <p class="sidebar-footer">&copy; 2025 TransBook Admin</p>
+    </aside>
+
+    <div class="content-wrap">
+      <header class="topbar">
+        <h1 id="page-title">Location Management</h1>
+      </header>
+
+      <main class="main-content">
+        <section class="locations-panel">
+          <div class="locations-toolbar">
+            <p id="location-count" class="location-count">6 locations</p>
+            <button id="add-location-toggle" class="btn-primary" type="button">+ Add Location</button>
+          </div>
+
+          <section id="add-location-card" class="add-location-card hidden">
+            <div class="add-location-header">
+              <h2>New Location</h2>
+              <button id="close-add-location" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="add-location-form" class="location-form">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Location name" required>
+              </label>
+              <label>
+                Region
+                <input type="text" name="region" placeholder="Region" required>
+              </label>
+              <button class="btn-primary form-submit" type="submit">Add Location</button>
+            </form>
+          </section>
+
+          <section id="locations-grid" class="locations-grid">
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Kigali</h3>
+                  <p>Kigali City</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Butare</h3>
+                  <p>Southern Province</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Gisenyi</h3>
+                  <p>Western Province</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Musanze</h3>
+                  <p>Northern Province</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Cyangugu</h3>
+                  <p>Western Province</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+
+            <article class="location-card">
+              <div class="location-left">
+                <div class="location-icon">L</div>
+                <div>
+                  <h3>Rwamagana</h3>
+                  <p>Eastern Province</p>
+                </div>
+              </div>
+              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="./assets/Js/main.js"></script>
+  <script src="./assets/Js/location.js"></script>
+</body>
+</html>

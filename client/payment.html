@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment History</title>
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/payments.css">
+</head>
+<body data-page-title="Payment History">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">TB</div>
+        <span>TransBook</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item" href="./index.html">Overview</a>
+        <a class="nav-item" href="./trips.html">Trips</a>
+        <a class="nav-item" href="./vendors.html">Vendors</a>
+        <a class="nav-item" href="./payment.html">Payments</a>
+        <a class="nav-item" href="./location.html">Locations</a>
+      </nav>
+      <p class="sidebar-footer">&copy; 2025 TransBook Admin</p>
+    </aside>
+
+    <div class="content-wrap">
+      <header class="topbar">
+        <h1 id="page-title">Payment History</h1>
+      </header>
+
+      <main class="main-content">
+        <section class="payments-panel">
+          <div class="payment-filters" role="tablist" aria-label="Payment status filter">
+            <button class="filter-btn active" type="button" data-filter="all">All</button>
+            <button class="filter-btn" type="button" data-filter="paid">Paid</button>
+            <button class="filter-btn" type="button" data-filter="pending">Pending</button>
+          </div>
+
+          <div class="payment-table-wrap">
+            <table class="payment-table">
+              <thead>
+                <tr>
+                  <th>Payment ID</th>
+                  <th>Trip ID</th>
+                  <th>Vendor</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="payment-table-body">
+                <tr data-status="paid">
+                  <td>#1</td>
+                  <td>#1</td>
+                  <td>TransRwanda</td>
+                  <td>5,000 RWF</td>
+                  <td>2025-01-15</td>
+                  <td><span class="payment-status paid">Paid</span></td>
+                </tr>
+                <tr data-status="pending">
+                  <td>#2</td>
+                  <td>#2</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td>2025-01-18</td>
+                  <td><span class="payment-status pending">Pending</span></td>
+                </tr>
+                <tr data-status="paid">
+                  <td>#3</td>
+                  <td>#3</td>
+                  <td>Lake Shuttle</td>
+                  <td>4,000 RWF</td>
+                  <td>2025-01-20</td>
+                  <td><span class="payment-status paid">Paid</span></td>
+                </tr>
+                <tr data-status="paid">
+                  <td>#4</td>
+                  <td>#4</td>
+                  <td>TransRwanda</td>
+                  <td>6,000 RWF</td>
+                  <td>2025-02-01</td>
+                  <td><span class="payment-status paid">Paid</span></td>
+                </tr>
+                <tr data-status="pending">
+                  <td>#5</td>
+                  <td>#5</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td>2025-02-05</td>
+                  <td><span class="payment-status pending">Pending</span></td>
+                </tr>
+                <tr data-status="pending">
+                  <td>#6</td>
+                  <td>#6</td>
+                  <td>Highland Movers</td>
+                  <td>5,500 RWF</td>
+                  <td>2025-02-10</td>
+                  <td><span class="payment-status pending">Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="./assets/Js/main.js"></script>
+  <script src="./assets/Js/payments.js"></script>
+</body>
+</html>

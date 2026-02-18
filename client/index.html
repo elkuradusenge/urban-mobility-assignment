@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Overview</title>
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
+</head>
+<body data-page-title="Dashboard Overview">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">TB</div>
+        <span>TransBook</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" href="./index.html">Overview</a>
+        <a class="nav-item" href="./trips.html">Trips</a>
+        <a class="nav-item" href="./vendors.html">Vendors</a>
+        <a class="nav-item" href="./payment.html">Payments</a>
+        <a class="nav-item" href="./location.html">Locations</a>
+      </nav>
+
+      <p class="sidebar-footer">© 2025 TransBook Admin</p>
+    </aside>
+
+    <div class="content-wrap">
+      <header class="topbar">
+        <h1 id="page-title">Dashboard Overview</h1>
+      </header>
+
+      <main class="main-content">
+        <section class="stats-grid">
+          <article class="stat-card">
+            <div>
+              <p class="stat-label">Total Trips</p>
+              <p class="stat-value">6</p>
+            </div>
+            <span class="stat-icon blue">T</span>
+          </article>
+
+          <article class="stat-card">
+            <div>
+              <p class="stat-label">Total Vendors</p>
+              <p class="stat-value">4</p>
+            </div>
+            <span class="stat-icon teal">V</span>
+          </article>
+
+          <article class="stat-card">
+            <div>
+              <p class="stat-label">Total Payments</p>
+              <p class="stat-value">6</p>
+            </div>
+            <span class="stat-icon amber">P</span>
+          </article>
+
+          <article class="stat-card">
+            <div>
+              <p class="stat-label">Total Revenue (RWF)</p>
+              <p class="stat-value">15,000</p>
+            </div>
+            <span class="stat-icon green">$</span>
+          </article>
+        </section>
+
+        <section class="panel">
+          <h2>Recent Trips</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Vendor</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kigali</td>
+                  <td>Butare</td>
+                  <td>TransRwanda</td>
+                  <td>5,000 RWF</td>
+                  <td><span class="status completed">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>Kigali</td>
+                  <td>Gisenyi</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td><span class="status scheduled">Scheduled</span></td>
+                </tr>
+                <tr>
+                  <td>Butare</td>
+                  <td>Cyangugu</td>
+                  <td>Lake Shuttle</td>
+                  <td>4,000 RWF</td>
+                  <td><span class="status progress">In Progress</span></td>
+                </tr>
+                <tr>
+                  <td>Kigali</td>
+                  <td>Musanze</td>
+                  <td>TransRwanda</td>
+                  <td>6,000 RWF</td>
+                  <td><span class="status completed">Completed</span></td>
+                </tr>
+                <tr>
+                  <td>Gisenyi</td>
+                  <td>Kigali</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td><span class="status cancelled">Cancelled</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="./assets/Js/main.js"></script>
+</body>
+</html>

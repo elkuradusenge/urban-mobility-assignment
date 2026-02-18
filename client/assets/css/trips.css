@@ -1,0 +1,164 @@
+.trips-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trips-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.trip-count {
+  margin: 0;
+  color: #5d789d;
+  font-size: 16px;
+}
+
+.btn-primary {
+  border: 0;
+  border-radius: 14px;
+  background: #1d4a8f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #163a72;
+}
+
+.add-trip-card {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-trip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.add-trip-header h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.btn-close {
+  border: 0;
+  background: transparent;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.trip-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 14px 16px;
+}
+
+.trip-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.trip-form input,
+.trip-form select {
+  border: 1px solid #c7d0dc;
+  background: #fff;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.form-submit {
+  align-self: end;
+  width: fit-content;
+}
+
+.trip-table-wrap {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  overflow-x: auto;
+}
+
+.trip-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trip-table th,
+.trip-table td {
+  text-align: left;
+  padding: 13px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 16px;
+}
+
+.trip-table th {
+  color: #5d789d;
+  font-weight: 500;
+}
+
+.trip-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: #1d4a8f;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+}
+
+.icon-btn.danger {
+  color: #ef4444;
+}
+
+@media (max-width: 1200px) {
+  .trip-form {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .trip-form {
+    grid-template-columns: 1fr;
+  }
+
+  .trips-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .trip-table th,
+  .trip-table td {
+    font-size: 14px;
+  }
+}
