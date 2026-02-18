@@ -18,7 +18,7 @@ export interface Payment {
 }
 
 export interface Trip {
-  id: number;
+  id?: number;
   vendor_id: number;
   pickup_datetime: string;
   dropoff_datetime: string;

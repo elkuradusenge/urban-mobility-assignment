@@ -127,12 +127,42 @@ const router = async (
     }
   }
 
-  // Other Routes
-  if (method === "GET") {
-    if (url === "/trips") {
+  // Trips Routes
+  if (url === "/trips") {
+    if (method === "GET") {
       tripsController.getAllTrips(req, res);
       return;
     }
+    if (method === "POST") {
+      tripsController.createTrip(req, res);
+      return;
+    }
+  }
+
+  if (url?.startsWith("/trips/")) {
+    const urlParts = url.split("/");
+    if (urlParts.length === 3 && urlParts[1] === "trips") {
+      const id = parseInt(urlParts[2]);
+      if (!isNaN(id)) {
+        if (method === "GET") {
+          tripsController.getTripById(req, res, id);
+          return;
+        }
+        if (method === "PUT") {
+          tripsController.updateTrip(req, res, id);
+          return;
+        }
+        if (method === "DELETE") {
+          tripsController.deleteTrip(req, res, id);
+          return;
+        }
+      }
+    }
+  }
+
+  // Other Routes
+  if (method === "GET") {
+    // End of routes, return 404
   }
 
   res.writeHead(404, { "Content-Type": "application/json" });
