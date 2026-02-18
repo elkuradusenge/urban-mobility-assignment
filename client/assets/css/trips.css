@@ -133,12 +133,67 @@
   background: transparent;
   color: #1d4a8f;
   cursor: pointer;
-  font-size: 20px;
-  padding: 0;
+  padding: 2px;
+  line-height: 0;
 }
 
 .icon-btn.danger {
   color: #ef4444;
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.icon-btn path {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn .edit-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.icon-btn .trash-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.status-pill.completed {
+  background: #cde8d8;
+  color: #16a34a;
+}
+
+.status-pill.scheduled {
+  background: #cfd7e3;
+  color: #1e4789;
+}
+
+.status-pill.in-progress {
+  background: #efe6d8;
+  color: #ea9900;
+}
+
+.status-pill.cancelled {
+  background: #ecd9db;
+  color: #dc3f3f;
 }
 
 @media (max-width: 1200px) {
