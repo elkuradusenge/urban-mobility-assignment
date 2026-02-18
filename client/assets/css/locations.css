@@ -1,0 +1,172 @@
+.locations-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.locations-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.location-count {
+  margin: 0;
+  color: #5d789d;
+  font-size: 16px;
+}
+
+.btn-primary {
+  border: 0;
+  border-radius: 14px;
+  background: #1d4a8f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #163a72;
+}
+
+.add-location-card {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-location-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.add-location-header h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.btn-close {
+  border: 0;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.location-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 14px 16px;
+}
+
+.location-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.location-form input {
+  border: 1px solid #c7d0dc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.form-submit {
+  align-self: end;
+  width: fit-content;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.location-card {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.location-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.location-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #d7ecec;
+  color: #147270;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.location-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.location-card p {
+  margin: 4px 0 0;
+  font-size: 16px;
+  color: #5d789d;
+}
+
+.action-btn {
+  border: 0;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.action-btn.danger {
+  color: #ef4444;
+}
+
+@media (max-width: 1200px) {
+  .locations-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .location-form {
+    grid-template-columns: 1fr;
+  }
+
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .locations-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
