@@ -1,10 +1,8 @@
-import { IncomingMessage, ServerResponse } from "http";
-import vendorsService from "../services/vendorsService";
-import { Vendor } from "../types";
-import { bodyParser } from "../utils/bodyParser";
-import { sendResponse } from "../utils/responseHelper";
+import vendorsService from "../services/vendorsService.js";
+import { bodyParser } from "../utils/bodyParser.js";
+import { sendResponse } from "../utils/responseHelper.js";
 
-const getAllVendors = (req: IncomingMessage, res: ServerResponse): void => {
+const getAllVendors = (req, res) => {
   try {
     const vendors = vendorsService.getAllVendors();
     sendResponse(res, 200, true, vendors);
@@ -14,11 +12,7 @@ const getAllVendors = (req: IncomingMessage, res: ServerResponse): void => {
   }
 };
 
-const getVendorById = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const getVendorById = (req, res, id) => {
   try {
     const vendor = vendorsService.getVendorById(id);
     if (!vendor) {
@@ -32,10 +26,7 @@ const getVendorById = (
   }
 };
 
-const createVendor = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> => {
+const createVendor = async (req, res) => {
   try {
     const body = await bodyParser(req);
     const missingFields = [];
@@ -55,9 +46,9 @@ const createVendor = async (
     }
 
     try {
-      const newVendor = vendorsService.createVendor(body as Vendor);
+      const newVendor = vendorsService.createVendor(body);
       sendResponse(res, 201, true, newVendor, "Vendor created successfully");
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
@@ -66,11 +57,7 @@ const createVendor = async (
   }
 };
 
-const updateVendor = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): Promise<void> => {
+const updateVendor = async (req, res, id) => {
   try {
     const body = await bodyParser(req);
     try {
@@ -87,7 +74,7 @@ const updateVendor = async (
           "Vendor updated successfully",
         );
       }
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
@@ -96,11 +83,7 @@ const updateVendor = async (
   }
 };
 
-const deleteVendor = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const deleteVendor = (req, res, id) => {
   try {
     const success = vendorsService.deleteVendor(id);
     if (!success) {

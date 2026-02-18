@@ -1,17 +1,14 @@
-import { db } from "../db/db";
-import { Trip } from "../types";
+import { db } from "../db/db.js";
 
-const findAll = (): Trip[] => {
-  return db.prepare("SELECT * FROM trips").all() as Trip[];
+const findAll = () => {
+  return db.prepare("SELECT * FROM trips").all();
 };
 
-const findById = (id: number): Trip | undefined => {
-  return db.prepare("SELECT * FROM trips WHERE id = ?").get(id) as
-    | Trip
-    | undefined;
+const findById = (id) => {
+  return db.prepare("SELECT * FROM trips WHERE id = ?").get(id);
 };
 
-const create = (trip: Trip): number => {
+const create = (trip) => {
   const insertStatement = db.prepare(
     `INSERT INTO trips (
         vendor_id, 
@@ -40,15 +37,15 @@ const create = (trip: Trip): number => {
     trip.fare_amount,
     trip.total_amount,
   );
-  return executionResult.lastInsertRowid as number;
+  return executionResult.lastInsertRowid;
 };
 
-const update = (id: number, trip: Partial<Trip>): void => {
+const update = (id, trip) => {
   const keys = Object.keys(trip);
   if (keys.length === 0) return;
 
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
-  const values = keys.map((key) => (trip as any)[key]);
+  const values = keys.map((key) => trip[key]);
 
   const updateStatement = db.prepare(
     `UPDATE trips SET ${setClause} WHERE id = ?`,
@@ -56,7 +53,7 @@ const update = (id: number, trip: Partial<Trip>): void => {
   updateStatement.run(...values, id);
 };
 
-const deleteById = (id: number): void => {
+const deleteById = (id) => {
   db.prepare("DELETE FROM trips WHERE id = ?").run(id);
 };
 

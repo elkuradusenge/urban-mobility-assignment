@@ -5,7 +5,7 @@ import path from "path";
 const dbPath = path.resolve(process.cwd(), "database.db");
 const db = new Database(dbPath, { verbose: console.log });
 
-export const initDb = (): void => {
+export const initDb = () => {
   // Locations Table
   db.prepare(
     `

@@ -1,13 +1,9 @@
-import { IncomingMessage, ServerResponse } from "http";
-import locationsRouter from "./locationsRouter";
-import vendorsRouter from "./vendorsRouter";
-import paymentsRouter from "./paymentsRouter";
-import tripsRouter from "./tripsRouter";
+import locationsRouter from "./locationsRouter.js";
+import vendorsRouter from "./vendorsRouter.js";
+import paymentsRouter from "./paymentsRouter.js";
+import tripsRouter from "./tripsRouter.js";
 
-const router = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> => {
+const router = async (req, res) => {
   const url = req.url;
   const method = req.method;
 

@@ -1,7 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
-import paymentsController from "../controllers/paymentsController";
+import paymentsController from "../controllers/paymentsController.js";
 
-const paymentsRouter = (req: IncomingMessage, res: ServerResponse): void => {
+const paymentsRouter = (req, res) => {
   const { url, method } = req;
 
   if (url === "/payments") {

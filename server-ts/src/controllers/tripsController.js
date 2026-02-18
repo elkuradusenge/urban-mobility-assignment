@@ -1,10 +1,8 @@
-import { IncomingMessage, ServerResponse } from "http";
-import tripsService from "../services/tripsService";
-import { Trip } from "../types";
-import { bodyParser } from "../utils/bodyParser";
-import { sendResponse } from "../utils/responseHelper";
+import tripsService from "../services/tripsService.js";
+import { bodyParser } from "../utils/bodyParser.js";
+import { sendResponse } from "../utils/responseHelper.js";
 
-const getAllTrips = (req: IncomingMessage, res: ServerResponse): void => {
+const getAllTrips = (req, res) => {
   try {
     const trips = tripsService.getAllTrips();
     sendResponse(res, 200, true, trips);
@@ -14,11 +12,7 @@ const getAllTrips = (req: IncomingMessage, res: ServerResponse): void => {
   }
 };
 
-const getTripById = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const getTripById = (req, res, id) => {
   try {
     const trip = tripsService.getTripById(id);
     if (!trip) {
@@ -32,10 +26,7 @@ const getTripById = (
   }
 };
 
-const createTrip = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> => {
+const createTrip = async (req, res) => {
   try {
     const body = await bodyParser(req);
     // Basic validation for required fields
@@ -64,15 +55,9 @@ const createTrip = async (
     }
 
     try {
-      const newTrip = tripsService.createTrip(body as Trip);
+      const newTrip = tripsService.createTrip(body);
       sendResponse(res, 201, true, newTrip, "Trip created successfully");
-    } catch (e: any) {
-      // Catch bad foreign keys or other validation errors as 400 Bad Request
-      // or 409 if it was a conflict (though checking FKs usually implies 400 or 404,
-      // but here we validate them before insertion).
-      // The Service throws errors like "Vendor ... not found".
-      // We'll treat these logic errors as 400 for now, or 404?
-      // Usually "Reference not found" is a 400 Bad Request (Invalid input).
+    } catch (e) {
       sendResponse(res, 400, false, null, e.message);
     }
   } catch (error) {
@@ -81,11 +66,7 @@ const createTrip = async (
   }
 };
 
-const updateTrip = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): Promise<void> => {
+const updateTrip = async (req, res, id) => {
   try {
     const body = await bodyParser(req);
     try {
@@ -96,7 +77,7 @@ const updateTrip = async (
       } else {
         sendResponse(res, 200, true, updatedTrip, "Trip updated successfully");
       }
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 400, false, null, e.message);
     }
   } catch (error) {
@@ -105,11 +86,7 @@ const updateTrip = async (
   }
 };
 
-const deleteTrip = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const deleteTrip = (req, res, id) => {
   try {
     const success = tripsService.deleteTrip(id);
     if (!success) {

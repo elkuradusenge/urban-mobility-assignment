@@ -1,7 +1,7 @@
-import http, { IncomingMessage, ServerResponse } from "http";
-import { initDb } from "./db/db";
-import { seedIfEmpty } from "./db/seed";
-import router from "./routes/router";
+import http from "http";
+import { initDb } from "./db/db.js";
+import { seedIfEmpty } from "./db/seed.js";
+import router from "./routes/router.js";
 
 // Initialize Database
 try {
@@ -14,7 +14,7 @@ try {
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(
-  (req: IncomingMessage, res: ServerResponse) => {
+  (req, res) => {
     router(req, res);
   },
 );

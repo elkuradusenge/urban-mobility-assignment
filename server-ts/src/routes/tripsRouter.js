@@ -1,7 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
-import tripsController from "../controllers/tripsController";
+import tripsController from "../controllers/tripsController.js";
 
-const tripsRouter = (req: IncomingMessage, res: ServerResponse): void => {
+const tripsRouter = (req, res) => {
   const { url, method } = req;
 
   if (url === "/trips") {

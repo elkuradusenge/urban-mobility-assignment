@@ -1,17 +1,16 @@
-import tripsRepository from "../repositories/tripsRepository";
-import locationRepository from "../repositories/locationRepository";
-import vendorsRepository from "../repositories/vendorsRepository";
-import { Trip } from "../types";
+import tripsRepository from "../repositories/tripsRepository.js";
+import locationRepository from "../repositories/locationRepository.js";
+import vendorsRepository from "../repositories/vendorsRepository.js";
 
-const getAllTrips = (): Trip[] => {
+const getAllTrips = () => {
   return tripsRepository.findAll();
 };
 
-const getTripById = (id: number): Trip | undefined => {
+const getTripById = (id) => {
   return tripsRepository.findById(id);
 };
 
-const validateForeignKeys = (trip: Partial<Trip>) => {
+const validateForeignKeys = (trip) => {
   if (trip.vendor_id !== undefined) {
     const vendor = vendorsRepository.findById(trip.vendor_id);
     if (!vendor) {
@@ -40,13 +39,13 @@ const validateForeignKeys = (trip: Partial<Trip>) => {
   }
 };
 
-const createTrip = (trip: Trip): Trip => {
+const createTrip = (trip) => {
   validateForeignKeys(trip);
   const id = tripsRepository.create(trip);
   return { ...trip, id };
 };
 
-const updateTrip = (id: number, tripData: Partial<Trip>): Trip | undefined => {
+const updateTrip = (id, tripData) => {
   const existing = tripsRepository.findById(id);
   if (!existing) return undefined;
 
@@ -56,7 +55,7 @@ const updateTrip = (id: number, tripData: Partial<Trip>): Trip | undefined => {
   return { ...existing, ...tripData };
 };
 
-const deleteTrip = (id: number): boolean => {
+const deleteTrip = (id) => {
   const existing = tripsRepository.findById(id);
   if (!existing) return false;
 

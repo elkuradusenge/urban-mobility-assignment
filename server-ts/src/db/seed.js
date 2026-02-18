@@ -1,12 +1,11 @@
-import { db } from "./db";
-import { Location, Vendor, Payment, Trip } from "../types";
+import { db } from "./db.js";
 
-export const seedIfEmpty = (): void => {
+export const seedIfEmpty = () => {
   console.log("Checking if database needs seeding...");
 
   // 1. Locations
   const locationsCount = (
-    db.prepare("SELECT count(*) as c FROM locations").get() as { c: number }
+    db.prepare("SELECT count(*) as c FROM locations").get()
   ).c;
   if (locationsCount === 0) {
     console.log("Seeding locations...");
@@ -16,7 +15,7 @@ export const seedIfEmpty = (): void => {
         `);
 
     // Using partial data for brevity in code, but in a real scenario, this would be the full list
-    const locations: Location[] = [
+    const locations = [
       {
         location_id: 1,
         borough: "EWR",
@@ -139,7 +138,7 @@ export const seedIfEmpty = (): void => {
       },
     ];
 
-    const insertLocationsTransaction = db.transaction((locs: Location[]) => {
+    const insertLocationsTransaction = db.transaction((locs) => {
       for (const l of locs) {
         insertLocation.run(l.location_id, l.borough, l.zone, l.service_zone);
       }
@@ -152,7 +151,7 @@ export const seedIfEmpty = (): void => {
 
   // 2. Vendors
   const vendorsCount = (
-    db.prepare("SELECT count(*) as c FROM vendors").get() as { c: number }
+    db.prepare("SELECT count(*) as c FROM vendors").get()
   ).c;
   if (vendorsCount === 0) {
     console.log("Seeding vendors...");
@@ -161,7 +160,7 @@ export const seedIfEmpty = (): void => {
             VALUES (?, ?, ?, ?)
         `);
 
-    const vendors: Vendor[] = [
+    const vendors = [
       {
         id: 1,
         name: "Michael Johnson",
@@ -224,7 +223,7 @@ export const seedIfEmpty = (): void => {
       },
     ];
 
-    const insertVendorsTransaction = db.transaction((vs: Vendor[]) => {
+    const insertVendorsTransaction = db.transaction((vs) => {
       for (const v of vs) {
         insertVendor.run(v.id, v.name, v.email, v.phone_number);
       }
@@ -237,7 +236,7 @@ export const seedIfEmpty = (): void => {
 
   // 3. Payments
   const paymentsCount = (
-    db.prepare("SELECT count(*) as c FROM payments").get() as { c: number }
+    db.prepare("SELECT count(*) as c FROM payments").get()
   ).c;
   if (paymentsCount === 0) {
     console.log("Seeding payments...");
@@ -246,7 +245,7 @@ export const seedIfEmpty = (): void => {
             VALUES (?, ?)
         `);
 
-    const payments: Payment[] = [
+    const payments = [
       { id: 1, name: "Mastercard" },
       { id: 2, name: "Visa" },
       { id: 3, name: "Cash" },
@@ -254,7 +253,7 @@ export const seedIfEmpty = (): void => {
       { id: 5, name: "Unknown" },
     ];
 
-    const insertPaymentsTransaction = db.transaction((ps: Payment[]) => {
+    const insertPaymentsTransaction = db.transaction((ps) => {
       for (const p of ps) {
         insertPayment.run(p.id, p.name);
       }
@@ -267,7 +266,7 @@ export const seedIfEmpty = (): void => {
 
   // 4. Trips
   const tripsCount = (
-    db.prepare("SELECT count(*) as c FROM trips").get() as { c: number }
+    db.prepare("SELECT count(*) as c FROM trips").get()
   ).c;
   if (tripsCount === 0) {
     console.log("Seeding trips...");
@@ -280,9 +279,7 @@ export const seedIfEmpty = (): void => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
-    // We can't easily auto-generate strict types for the random data generation without loose types or helper functions
-    // But for this seeding script, we can construct the object cleanly.
-    const trips: Omit<Trip, "id">[] = []; // ID is autoincrement
+    const trips = []; // ID is autoincrement
     for (let i = 1; i <= 10; i++) {
       const fare = parseFloat((Math.random() * 20 + 5).toFixed(2));
       const tip = parseFloat((Math.random() * 5).toFixed(2));
@@ -304,7 +301,7 @@ export const seedIfEmpty = (): void => {
       });
     }
 
-    const insertTripsTransaction = db.transaction((ts: Omit<Trip, "id">[]) => {
+    const insertTripsTransaction = db.transaction((ts) => {
       for (const t of ts) {
         insertTrip.run(
           t.vendor_id,

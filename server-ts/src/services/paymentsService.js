@@ -1,15 +1,14 @@
-import paymentsRepository from "../repositories/paymentsRepository";
-import { Payment } from "../types";
+import paymentsRepository from "../repositories/paymentsRepository.js";
 
-const getAllPayments = (): Payment[] => {
+const getAllPayments = () => {
   return paymentsRepository.findAll();
 };
 
-const getPaymentById = (id: number): Payment | undefined => {
+const getPaymentById = (id) => {
   return paymentsRepository.findById(id);
 };
 
-const createPayment = (payment: Payment): Payment => {
+const createPayment = (payment) => {
   const existing = paymentsRepository.findByName(payment.name);
   if (existing) {
     throw new Error(`Payment method ${payment.name} already exists`);
@@ -19,9 +18,9 @@ const createPayment = (payment: Payment): Payment => {
 };
 
 const updatePayment = (
-  id: number,
-  paymentData: Partial<Payment>,
-): Payment | undefined => {
+  id,
+  paymentData,
+) => {
   const existing = paymentsRepository.findById(id);
   if (!existing) return undefined;
 
@@ -36,7 +35,7 @@ const updatePayment = (
   return { ...existing, ...paymentData };
 };
 
-const deletePayment = (id: number): boolean => {
+const deletePayment = (id) => {
   const existing = paymentsRepository.findById(id);
   if (!existing) return false;
 

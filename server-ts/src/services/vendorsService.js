@@ -1,15 +1,14 @@
-import vendorsRepository from "../repositories/vendorsRepository";
-import { Vendor } from "../types";
+import vendorsRepository from "../repositories/vendorsRepository.js";
 
-const getAllVendors = (): Vendor[] => {
+const getAllVendors = () => {
   return vendorsRepository.findAll();
 };
 
-const getVendorById = (id: number): Vendor | undefined => {
+const getVendorById = (id) => {
   return vendorsRepository.findById(id);
 };
 
-const createVendor = (vendor: Vendor): Vendor => {
+const createVendor = (vendor) => {
   const existing = vendorsRepository.findByEmail(vendor.email);
   if (existing) {
     throw new Error(`Vendor with email ${vendor.email} already exists`);
@@ -19,9 +18,9 @@ const createVendor = (vendor: Vendor): Vendor => {
 };
 
 const updateVendor = (
-  id: number,
-  vendorData: Partial<Vendor>,
-): Vendor | undefined => {
+  id,
+  vendorData,
+) => {
   const existing = vendorsRepository.findById(id);
   if (!existing) return undefined;
 
@@ -36,7 +35,7 @@ const updateVendor = (
   return { ...existing, ...vendorData };
 };
 
-const deleteVendor = (id: number): boolean => {
+const deleteVendor = (id) => {
   const existing = vendorsRepository.findById(id);
   if (!existing) return false;
 

@@ -1,6 +1,4 @@
-import { IncomingMessage } from "http";
-
-export const bodyParser = (req: IncomingMessage): Promise<any> => {
+export const bodyParser = (req) => {
   return new Promise((resolve, reject) => {
     let body = "";
     req.on("data", (chunk) => {

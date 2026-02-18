@@ -1,23 +1,22 @@
-import locationRepository from "../repositories/locationRepository";
-import { Location } from "../types";
+import locationRepository from "../repositories/locationRepository.js";
 
-const getAllLocations = (): Location[] => {
+const getAllLocations = () => {
   return locationRepository.findAll();
 };
 
-const getLocationById = (id: number): Location | undefined => {
+const getLocationById = (id) => {
   return locationRepository.findById(id);
 };
 
-const createLocation = (location: Location): Location => {
+const createLocation = (location) => {
   const id = locationRepository.create(location);
   return { ...location, location_id: id };
 };
 
 const updateLocation = (
-  id: number,
-  locationData: Partial<Location>,
-): Location | undefined => {
+  id,
+  locationData,
+) => {
   const existing = locationRepository.findById(id);
   if (!existing) return undefined;
 
@@ -25,7 +24,7 @@ const updateLocation = (
   return { ...existing, ...locationData };
 };
 
-const deleteLocation = (id: number): boolean => {
+const deleteLocation = (id) => {
   const existing = locationRepository.findById(id);
   if (!existing) return false;
 

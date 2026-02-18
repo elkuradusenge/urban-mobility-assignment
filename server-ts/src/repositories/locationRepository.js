@@ -1,17 +1,14 @@
-import { db } from "../db/db";
-import { Location } from "../types";
+import { db } from "../db/db.js";
 
-const findAll = (): Location[] => {
-  return db.prepare("SELECT * FROM locations").all() as Location[];
+const findAll = () => {
+  return db.prepare("SELECT * FROM locations").all();
 };
 
-const findById = (id: number): Location | undefined => {
-  return db.prepare("SELECT * FROM locations WHERE location_id = ?").get(id) as
-    | Location
-    | undefined;
+const findById = (id) => {
+  return db.prepare("SELECT * FROM locations WHERE location_id = ?").get(id);
 };
 
-const create = (location: Location): number => {
+const create = (location) => {
   const insertStatement = db.prepare(
     "INSERT INTO locations (borough, zone, service_zone) VALUES (?, ?, ?)",
   );
@@ -20,15 +17,15 @@ const create = (location: Location): number => {
     location.zone,
     location.service_zone,
   );
-  return executionResult.lastInsertRowid as number;
+  return executionResult.lastInsertRowid;
 };
 
-const update = (id: number, location: Partial<Location>): void => {
+const update = (id, location) => {
   const keys = Object.keys(location);
   if (keys.length === 0) return;
 
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
-  const values = keys.map((key) => (location as any)[key]);
+  const values = keys.map((key) => location[key]);
 
   const updateStatement = db.prepare(
     `UPDATE locations SET ${setClause} WHERE location_id = ?`,
@@ -36,7 +33,7 @@ const update = (id: number, location: Partial<Location>): void => {
   updateStatement.run(...values, id);
 };
 
-const deleteById = (id: number): void => {
+const deleteById = (id) => {
   db.prepare("DELETE FROM locations WHERE location_id = ?").run(id);
 };
 

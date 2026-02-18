@@ -1,7 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
-import vendorsController from "../controllers/vendorsController";
+import vendorsController from "../controllers/vendorsController.js";
 
-const vendorsRouter = (req: IncomingMessage, res: ServerResponse): void => {
+const vendorsRouter = (req, res) => {
   const { url, method } = req;
 
   if (url === "/vendors") {

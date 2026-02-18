@@ -1,10 +1,8 @@
-import { IncomingMessage, ServerResponse } from "http";
-import locationService from "../services/locationService";
-import { Location } from "../types";
-import { bodyParser } from "../utils/bodyParser";
-import { sendResponse } from "../utils/responseHelper";
+import locationService from "../services/locationService.js";
+import { bodyParser } from "../utils/bodyParser.js";
+import { sendResponse } from "../utils/responseHelper.js";
 
-const getAllLocations = (req: IncomingMessage, res: ServerResponse): void => {
+const getAllLocations = (req, res) => {
   try {
     const locations = locationService.getAllLocations();
     sendResponse(res, 200, true, locations);
@@ -14,11 +12,7 @@ const getAllLocations = (req: IncomingMessage, res: ServerResponse): void => {
   }
 };
 
-const getLocationById = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const getLocationById = (req, res, id) => {
   try {
     const location = locationService.getLocationById(id);
     if (!location) {
@@ -32,10 +26,7 @@ const getLocationById = (
   }
 };
 
-const createLocation = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> => {
+const createLocation = async (req, res) => {
   try {
     const body = await bodyParser(req);
     const missingFields = [];
@@ -55,7 +46,7 @@ const createLocation = async (
     }
 
     try {
-      const newLocation = locationService.createLocation(body as Location);
+      const newLocation = locationService.createLocation(body);
       sendResponse(
         res,
         201,
@@ -63,7 +54,7 @@ const createLocation = async (
         newLocation,
         "Location created successfully",
       );
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
@@ -72,11 +63,7 @@ const createLocation = async (
   }
 };
 
-const updateLocation = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): Promise<void> => {
+const updateLocation = async (req, res, id) => {
   try {
     const body = await bodyParser(req);
     const updatedLocation = locationService.updateLocation(id, body);
@@ -98,11 +85,7 @@ const updateLocation = async (
   }
 };
 
-const deleteLocation = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const deleteLocation = (req, res, id) => {
   try {
     const success = locationService.deleteLocation(id);
     if (!success) {

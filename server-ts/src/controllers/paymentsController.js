@@ -1,10 +1,8 @@
-import { IncomingMessage, ServerResponse } from "http";
-import paymentsService from "../services/paymentsService";
-import { Payment } from "../types";
-import { bodyParser } from "../utils/bodyParser";
-import { sendResponse } from "../utils/responseHelper";
+import paymentsService from "../services/paymentsService.js";
+import { bodyParser } from "../utils/bodyParser.js";
+import { sendResponse } from "../utils/responseHelper.js";
 
-const getAllPayments = (req: IncomingMessage, res: ServerResponse): void => {
+const getAllPayments = (req, res) => {
   try {
     const payments = paymentsService.getAllPayments();
     sendResponse(res, 200, true, payments);
@@ -14,11 +12,7 @@ const getAllPayments = (req: IncomingMessage, res: ServerResponse): void => {
   }
 };
 
-const getPaymentById = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const getPaymentById = (req, res, id) => {
   try {
     const payment = paymentsService.getPaymentById(id);
     if (!payment) {
@@ -32,10 +26,7 @@ const getPaymentById = (
   }
 };
 
-const createPayment = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-): Promise<void> => {
+const createPayment = async (req, res) => {
   try {
     const body = await bodyParser(req);
     const missingFields = [];
@@ -53,9 +44,9 @@ const createPayment = async (
     }
 
     try {
-      const newPayment = paymentsService.createPayment(body as Payment);
+      const newPayment = paymentsService.createPayment(body);
       sendResponse(res, 201, true, newPayment, "Payment created successfully");
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
@@ -64,11 +55,7 @@ const createPayment = async (
   }
 };
 
-const updatePayment = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): Promise<void> => {
+const updatePayment = async (req, res, id) => {
   try {
     const body = await bodyParser(req);
     try {
@@ -85,7 +72,7 @@ const updatePayment = async (
           "Payment updated successfully",
         );
       }
-    } catch (e: any) {
+    } catch (e) {
       sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
@@ -94,11 +81,7 @@ const updatePayment = async (
   }
 };
 
-const deletePayment = (
-  req: IncomingMessage,
-  res: ServerResponse,
-  id: number,
-): void => {
+const deletePayment = (req, res, id) => {
   try {
     const success = paymentsService.deletePayment(id);
     if (!success) {

@@ -1,7 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
-import locationController from "../controllers/locationController";
+import locationController from "../controllers/locationController.js";
 
-const locationsRouter = (req: IncomingMessage, res: ServerResponse): void => {
+const locationsRouter = (req, res) => {
   const { url, method } = req;
 
   if (url === "/locations") {
