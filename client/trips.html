@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trips</title>
+  <title>Trip Management</title>
   <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/trips.css">
 </head>
-<body data-page-title="Trips">
+<body data-page-title="Trip Management">
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -20,18 +21,152 @@
         <a class="nav-item" href="./payment.html">Payments</a>
         <a class="nav-item" href="./location.html">Locations</a>
       </nav>
-      <p class="sidebar-footer">© 2025 TransBook Admin</p>
+      <p class="sidebar-footer">&copy; 2025 TransBook Admin</p>
     </aside>
 
     <div class="content-wrap">
       <header class="topbar">
-        <h1 id="page-title">Trips</h1>
+        <h1 id="page-title">Trip Management</h1>
       </header>
+
       <main class="main-content">
-        <section class="page-placeholder">Trips section content goes here.</section>
+        <section class="trips-panel">
+          <div class="trips-toolbar">
+            <p id="trip-count" class="trip-count">6 trips total</p>
+            <button id="add-trip-toggle" class="btn-primary" type="button">+ Add Trip</button>
+          </div>
+
+          <section id="add-trip-card" class="add-trip-card hidden">
+            <div class="add-trip-header">
+              <h2>New Trip</h2>
+              <button id="close-add-trip" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="add-trip-form" class="trip-form">
+              <label>
+                From
+                <select name="from" required>
+                  <option value="" selected disabled>Select origin</option>
+                  <option>Kigali</option>
+                  <option>Butare</option>
+                  <option>Gisenyi</option>
+                  <option>Cyangugu</option>
+                  <option>Musanze</option>
+                </select>
+              </label>
+
+              <label>
+                To
+                <select name="to" required>
+                  <option value="" selected disabled>Select destination</option>
+                  <option>Kigali</option>
+                  <option>Butare</option>
+                  <option>Gisenyi</option>
+                  <option>Cyangugu</option>
+                  <option>Musanze</option>
+                </select>
+              </label>
+
+              <label>
+                Vendor
+                <select name="vendor" required>
+                  <option value="" selected disabled>Select vendor</option>
+                  <option>TransRwanda</option>
+                  <option>Volcano Express</option>
+                  <option>Lake Shuttle</option>
+                  <option>Highland Movers</option>
+                </select>
+              </label>
+
+              <label>
+                Price (RWF)
+                <input type="number" name="price" min="0" placeholder="0" required>
+              </label>
+
+              <label>
+                Status
+                <select name="status" required>
+                  <option>Scheduled</option>
+                  <option>Completed</option>
+                  <option>In Progress</option>
+                  <option>Cancelled</option>
+                </select>
+              </label>
+
+              <button class="btn-primary form-submit" type="submit">Add Trip</button>
+            </form>
+          </section>
+
+          <div class="trip-table-wrap">
+            <table class="trip-table">
+              <thead>
+                <tr>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Vendor</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="trip-table-body">
+                <tr>
+                  <td>Kigali</td>
+                  <td>Butare</td>
+                  <td>TransRwanda</td>
+                  <td>5,000 RWF</td>
+                  <td><span class="status completed">Completed</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+                <tr>
+                  <td>Kigali</td>
+                  <td>Gisenyi</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td><span class="status scheduled">Scheduled</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+                <tr>
+                  <td>Butare</td>
+                  <td>Cyangugu</td>
+                  <td>Lake Shuttle</td>
+                  <td>4,000 RWF</td>
+                  <td><span class="status progress">In Progress</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+                <tr>
+                  <td>Kigali</td>
+                  <td>Musanze</td>
+                  <td>TransRwanda</td>
+                  <td>6,000 RWF</td>
+                  <td><span class="status completed">Completed</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+                <tr>
+                  <td>Gisenyi</td>
+                  <td>Kigali</td>
+                  <td>Volcano Express</td>
+                  <td>7,500 RWF</td>
+                  <td><span class="status cancelled">Cancelled</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+                <tr>
+                  <td>Musanze</td>
+                  <td>Kigali</td>
+                  <td>Highland Movers</td>
+                  <td>5,500 RWF</td>
+                  <td><span class="status scheduled">Scheduled</span></td>
+                  <td class="row-actions"><button class="icon-btn" type="button">Edit</button><button class="icon-btn danger js-delete-trip" type="button">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </main>
     </div>
   </div>
+
   <script src="./assets/Js/main.js"></script>
+  <script src="./assets/Js/trips.js"></script>
 </body>
 </html>
