@@ -1,0 +1,173 @@
+openapi: 3.0.0
+info:
+  title: Urban Mobility API
+  version: 1.0.0
+paths:
+  /locations:
+    get:
+      summary: Returns the list of all the locations
+      tags: [Locations]
+      responses:
+        200:
+          description: The list of the locations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Location"
+                  message:
+                    type: string
+        500:
+          description: Server error
+    post:
+      summary: Create a new location
+      tags: [Locations]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+      responses:
+        201:
+          description: The created location
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Location"
+                  message:
+                    type: string
+        400:
+          description: Missing required fields
+        500:
+          description: Server error
+  /locations/{id}:
+    get:
+      summary: Get the location by id
+      tags: [Locations]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The location id
+      responses:
+        200:
+          description: The location description by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Location"
+                  message:
+                    type: string
+        404:
+          description: Location not found
+        500:
+          description: Server error
+    put:
+      summary: Update the location by the id
+      tags: [Locations]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The location id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Location"
+      responses:
+        200:
+          description: The location was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Location"
+                  message:
+                    type: string
+        404:
+          description: Location not found
+        500:
+          description: Server error
+    delete:
+      summary: Remove the location by id
+      tags: [Locations]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The location id
+      responses:
+        200:
+          description: The location was deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Location not found
+        500:
+          description: Server error
+
+components:
+  schemas:
+    Location:
+      type: object
+      required:
+        - borough
+        - zone
+        - service_zone
+      properties:
+        location_id:
+          type: integer
+          description: The auto-generated id of the location
+        borough:
+          type: string
+          description: The borough of the location
+        zone:
+          type: string
+          description: The zone of the location
+        service_zone:
+          type: string
+          description: The service zone of the location
+      example:
+        location_id: 1
+        borough: Manhattan
+        zone: Yellow Zone
+        service_zone: EWR
+tags:
+  - name: Locations
+    description: The locations managing API

@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: Urban Mobility API
+  version: 1.0.0
+paths:
+  /payments:
+    get:
+      summary: Returns the list of all the payments
+      tags: [Payments]
+      responses:
+        200:
+          description: The list of the payments
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Payment"
+                  message:
+                    type: string
+        500:
+          description: Server error
+    post:
+      summary: Create a new payment method
+      tags: [Payments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentInput"
+      responses:
+        201:
+          description: The created payment method
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Payment"
+                  message:
+                    type: string
+        400:
+          description: Missing required fields
+        409:
+          description: Payment method already exists
+        500:
+          description: Server error
+  /payments/{id}:
+    get:
+      summary: Get the payment method by id
+      tags: [Payments]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The payment id
+      responses:
+        200:
+          description: The payment method description by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Payment"
+                  message:
+                    type: string
+        404:
+          description: Payment method not found
+        500:
+          description: Server error
+    put:
+      summary: Update the payment method by the id
+      tags: [Payments]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The payment id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentInput"
+      responses:
+        200:
+          description: The payment method was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Payment"
+                  message:
+                    type: string
+        404:
+          description: Payment method not found
+        409:
+          description: Payment name already in use
+        500:
+          description: Server error
+    delete:
+      summary: Remove the payment method by id
+      tags: [Payments]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The payment id
+      responses:
+        200:
+          description: The payment method was deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Payment method not found
+        500:
+          description: Server error
+
+components:
+  schemas:
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the payment method
+        name:
+          type: string
+          description: The name of the payment method
+      example:
+        id: 1
+        name: Credit Card
+    PaymentInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+      example:
+        name: Bitcoin
+tags:
+  - name: Payments
+    description: The payments managing API
