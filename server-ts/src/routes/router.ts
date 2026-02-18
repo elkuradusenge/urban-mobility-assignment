@@ -1,8 +1,8 @@
 import { IncomingMessage, ServerResponse } from "http";
-import locationController from "../controllers/locationController";
-import tripsController from "../controllers/tripsController";
-import vendorsController from "../controllers/vendorsController";
-import paymentsController from "../controllers/paymentsController";
+import locationsRouter from "./locationsRouter";
+import vendorsRouter from "./vendorsRouter";
+import paymentsRouter from "./paymentsRouter";
+import tripsRouter from "./tripsRouter";
 
 const router = async (
   req: IncomingMessage,
@@ -27,142 +27,25 @@ const router = async (
     return;
   }
 
-  // Locations Routes
-  if (url === "/locations") {
-    if (method === "GET") {
-      locationController.getAllLocations(req, res);
-      return;
-    }
-
-    if (method === "POST") {
-      locationController.createLocation(req, res);
-      return;
-    }
+  // Dispatch to sub-routers
+  if (url?.startsWith("/locations")) {
+    locationsRouter(req, res);
+    return;
   }
 
-  if (url?.startsWith("/locations/")) {
-    const urlParts = url.split("/");
-    if (urlParts.length === 3 && urlParts[1] === "locations") {
-      const id = parseInt(urlParts[2]);
-      if (!isNaN(id)) {
-        if (method === "GET") {
-          locationController.getLocationById(req, res, id);
-          return;
-        }
-        if (method === "PUT") {
-          locationController.updateLocation(req, res, id);
-          return;
-        }
-        if (method === "DELETE") {
-          locationController.deleteLocation(req, res, id);
-          return;
-        }
-      }
-    }
+  if (url?.startsWith("/vendors")) {
+    vendorsRouter(req, res);
+    return;
   }
 
-  // Vendors Routes
-  if (url === "/vendors") {
-    if (method === "GET") {
-      vendorsController.getAllVendors(req, res);
-      return;
-    }
-    if (method === "POST") {
-      vendorsController.createVendor(req, res);
-      return;
-    }
+  if (url?.startsWith("/payments")) {
+    paymentsRouter(req, res);
+    return;
   }
 
-  if (url?.startsWith("/vendors/")) {
-    const urlParts = url.split("/");
-    if (urlParts.length === 3 && urlParts[1] === "vendors") {
-      const id = parseInt(urlParts[2]);
-      if (!isNaN(id)) {
-        if (method === "GET") {
-          vendorsController.getVendorById(req, res, id);
-          return;
-        }
-        if (method === "PUT") {
-          vendorsController.updateVendor(req, res, id);
-          return;
-        }
-        if (method === "DELETE") {
-          vendorsController.deleteVendor(req, res, id);
-          return;
-        }
-      }
-    }
-  }
-
-  // Payments Routes
-  if (url === "/payments") {
-    if (method === "GET") {
-      paymentsController.getAllPayments(req, res);
-      return;
-    }
-    if (method === "POST") {
-      paymentsController.createPayment(req, res);
-      return;
-    }
-  }
-
-  if (url?.startsWith("/payments/")) {
-    const urlParts = url.split("/");
-    if (urlParts.length === 3 && urlParts[1] === "payments") {
-      const id = parseInt(urlParts[2]);
-      if (!isNaN(id)) {
-        if (method === "GET") {
-          paymentsController.getPaymentById(req, res, id);
-          return;
-        }
-        if (method === "PUT") {
-          paymentsController.updatePayment(req, res, id);
-          return;
-        }
-        if (method === "DELETE") {
-          paymentsController.deletePayment(req, res, id);
-          return;
-        }
-      }
-    }
-  }
-
-  // Trips Routes
-  if (url === "/trips") {
-    if (method === "GET") {
-      tripsController.getAllTrips(req, res);
-      return;
-    }
-    if (method === "POST") {
-      tripsController.createTrip(req, res);
-      return;
-    }
-  }
-
-  if (url?.startsWith("/trips/")) {
-    const urlParts = url.split("/");
-    if (urlParts.length === 3 && urlParts[1] === "trips") {
-      const id = parseInt(urlParts[2]);
-      if (!isNaN(id)) {
-        if (method === "GET") {
-          tripsController.getTripById(req, res, id);
-          return;
-        }
-        if (method === "PUT") {
-          tripsController.updateTrip(req, res, id);
-          return;
-        }
-        if (method === "DELETE") {
-          tripsController.deleteTrip(req, res, id);
-          return;
-        }
-      }
-    }
-  }
-
-  // Other Routes
-  if (method === "GET") {
-    // End of routes, return 404
+  if (url?.startsWith("/trips")) {
+    tripsRouter(req, res);
+    return;
   }
 
   res.writeHead(404, { "Content-Type": "application/json" });
