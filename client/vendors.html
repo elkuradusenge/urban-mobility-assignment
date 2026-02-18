@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vendors</title>
+  <title>Vendor Management</title>
   <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <link rel="stylesheet" href="./assets/css/vendors.css">
 </head>
-<body data-page-title="Vendors">
+<body data-page-title="Vendor Management">
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -20,18 +21,123 @@
         <a class="nav-item" href="./payment.html">Payments</a>
         <a class="nav-item" href="./location.html">Locations</a>
       </nav>
-      <p class="sidebar-footer">© 2025 TransBook Admin</p>
+      <p class="sidebar-footer">&copy; 2025 TransBook Admin</p>
     </aside>
 
     <div class="content-wrap">
       <header class="topbar">
-        <h1 id="page-title">Vendors</h1>
+        <h1 id="page-title">Vendor Management</h1>
       </header>
+
       <main class="main-content">
-        <section class="page-placeholder">Vendors section content goes here.</section>
+        <section class="vendors-panel">
+          <div class="vendors-toolbar">
+            <p id="vendor-count" class="vendor-count">4 vendors total</p>
+            <button id="add-vendor-toggle" class="btn-primary" type="button">+ Add Vendor</button>
+          </div>
+
+          <section id="add-vendor-card" class="add-vendor-card hidden">
+            <div class="add-vendor-header">
+              <h2>New Vendor</h2>
+              <button id="close-add-vendor" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="add-vendor-form" class="vendor-form">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Vendor name" required>
+              </label>
+
+              <label>
+                Email
+                <input type="email" name="email" placeholder="email@example.com" required>
+              </label>
+
+              <label>
+                Phone
+                <input type="text" name="phone" placeholder="+250 ..." required>
+              </label>
+
+              <label>
+                Rating (1-5)
+                <input type="number" name="rating" min="1" max="5" step="0.1" value="4" required>
+              </label>
+
+              <button class="btn-primary form-submit" type="submit">Add Vendor</button>
+            </form>
+          </section>
+
+          <section id="vendors-grid" class="vendors-grid">
+            <article class="vendor-card">
+              <div class="vendor-top">
+                <h3>TransRwanda</h3>
+                <div class="card-actions">
+                  <button class="action-btn" type="button">Edit</button>
+                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
+                </div>
+              </div>
+              <p>info@transrwanda.rw</p>
+              <p>+250 788 000 001</p>
+              <div class="vendor-bottom">
+                <span class="rating">* 4.5</span>
+                <span class="trips-count">120 trips</span>
+              </div>
+            </article>
+
+            <article class="vendor-card">
+              <div class="vendor-top">
+                <h3>Volcano Express</h3>
+                <div class="card-actions">
+                  <button class="action-btn" type="button">Edit</button>
+                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
+                </div>
+              </div>
+              <p>hello@volcanoexpress.rw</p>
+              <p>+250 788 000 002</p>
+              <div class="vendor-bottom">
+                <span class="rating">* 4.2</span>
+                <span class="trips-count">85 trips</span>
+              </div>
+            </article>
+
+            <article class="vendor-card">
+              <div class="vendor-top">
+                <h3>Lake Shuttle</h3>
+                <div class="card-actions">
+                  <button class="action-btn" type="button">Edit</button>
+                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
+                </div>
+              </div>
+              <p>contact@lakeshuttle.rw</p>
+              <p>+250 788 000 003</p>
+              <div class="vendor-bottom">
+                <span class="rating">* 3.8</span>
+                <span class="trips-count">45 trips</span>
+              </div>
+            </article>
+
+            <article class="vendor-card">
+              <div class="vendor-top">
+                <h3>Highland Movers</h3>
+                <div class="card-actions">
+                  <button class="action-btn" type="button">Edit</button>
+                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
+                </div>
+              </div>
+              <p>info@highlandmovers.rw</p>
+              <p>+250 788 000 004</p>
+              <div class="vendor-bottom">
+                <span class="rating">* 4.7</span>
+                <span class="trips-count">200 trips</span>
+              </div>
+            </article>
+          </section>
+        </section>
       </main>
     </div>
   </div>
+
   <script src="./assets/Js/main.js"></script>
+  <script src="./assets/Js/vendors.js"></script>
 </body>
 </html>
