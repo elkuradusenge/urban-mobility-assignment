@@ -34,7 +34,7 @@ export const initDb = (): void => {
   db.prepare(
     `
         CREATE TABLE IF NOT EXISTS payments (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT
         )
     `,

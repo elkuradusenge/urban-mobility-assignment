@@ -13,7 +13,7 @@ export interface Vendor {
 }
 
 export interface Payment {
-  id: number;
+  id?: number;
   name: string;
 }
 
