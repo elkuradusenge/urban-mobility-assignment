@@ -71,18 +71,22 @@ const updatePayment = async (
 ): Promise<void> => {
   try {
     const body = await bodyParser(req);
-    const updatedPayment = paymentsService.updatePayment(id, body);
+    try {
+      const updatedPayment = paymentsService.updatePayment(id, body);
 
-    if (!updatedPayment) {
-      sendResponse(res, 404, false, null, "Payment not found");
-    } else {
-      sendResponse(
-        res,
-        200,
-        true,
-        updatedPayment,
-        "Payment updated successfully",
-      );
+      if (!updatedPayment) {
+        sendResponse(res, 404, false, null, "Payment not found");
+      } else {
+        sendResponse(
+          res,
+          200,
+          true,
+          updatedPayment,
+          "Payment updated successfully",
+        );
+      }
+    } catch (e: any) {
+      sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
     console.error(error);

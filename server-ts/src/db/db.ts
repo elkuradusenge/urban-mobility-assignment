@@ -24,7 +24,7 @@ export const initDb = (): void => {
         CREATE TABLE IF NOT EXISTS vendors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
-            email TEXT,
+            email TEXT UNIQUE,
             phone_number TEXT
         )
     `,
@@ -35,7 +35,7 @@ export const initDb = (): void => {
     `
         CREATE TABLE IF NOT EXISTS payments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT
+            name TEXT UNIQUE
         )
     `,
   ).run();

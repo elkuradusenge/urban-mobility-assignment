@@ -73,18 +73,22 @@ const updateVendor = async (
 ): Promise<void> => {
   try {
     const body = await bodyParser(req);
-    const updatedVendor = vendorsService.updateVendor(id, body);
+    try {
+      const updatedVendor = vendorsService.updateVendor(id, body);
 
-    if (!updatedVendor) {
-      sendResponse(res, 404, false, null, "Vendor not found");
-    } else {
-      sendResponse(
-        res,
-        200,
-        true,
-        updatedVendor,
-        "Vendor updated successfully",
-      );
+      if (!updatedVendor) {
+        sendResponse(res, 404, false, null, "Vendor not found");
+      } else {
+        sendResponse(
+          res,
+          200,
+          true,
+          updatedVendor,
+          "Vendor updated successfully",
+        );
+      }
+    } catch (e: any) {
+      sendResponse(res, 409, false, null, e.message);
     }
   } catch (error) {
     console.error(error);

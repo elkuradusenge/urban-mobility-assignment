@@ -11,6 +11,12 @@ const findById = (id: number): Payment | undefined => {
     | undefined;
 };
 
+const findByName = (name: string): Payment | undefined => {
+  return db.prepare("SELECT * FROM payments WHERE name = ?").get(name) as
+    | Payment
+    | undefined;
+};
+
 const create = (payment: Payment): number => {
   const insertStatement = db.prepare("INSERT INTO payments (name) VALUES (?)");
   const executionResult = insertStatement.run(payment.name);
@@ -37,6 +43,7 @@ const deleteById = (id: number): void => {
 export default {
   findAll,
   findById,
+  findByName,
   create,
   update,
   deleteById,

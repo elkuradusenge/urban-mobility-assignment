@@ -11,6 +11,12 @@ const findById = (id: number): Vendor | undefined => {
     | undefined;
 };
 
+const findByEmail = (email: string): Vendor | undefined => {
+  return db.prepare("SELECT * FROM vendors WHERE email = ?").get(email) as
+    | Vendor
+    | undefined;
+};
+
 const create = (vendor: Vendor): number => {
   const insertStatement = db.prepare(
     "INSERT INTO vendors (name, email, phone_number) VALUES (?, ?, ?)",
@@ -43,6 +49,7 @@ const deleteById = (id: number): void => {
 export default {
   findAll,
   findById,
+  findByEmail,
   create,
   update,
   deleteById,

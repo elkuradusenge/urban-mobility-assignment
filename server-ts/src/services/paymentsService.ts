@@ -10,6 +10,10 @@ const getPaymentById = (id: number): Payment | undefined => {
 };
 
 const createPayment = (payment: Payment): Payment => {
+  const existing = paymentsRepository.findByName(payment.name);
+  if (existing) {
+    throw new Error(`Payment method ${payment.name} already exists`);
+  }
   const id = paymentsRepository.create(payment);
   return { ...payment, id };
 };
@@ -20,6 +24,13 @@ const updatePayment = (
 ): Payment | undefined => {
   const existing = paymentsRepository.findById(id);
   if (!existing) return undefined;
+
+  if (paymentData.name) {
+    const existingName = paymentsRepository.findByName(paymentData.name);
+    if (existingName && existingName.id !== id) {
+      throw new Error(`Payment method ${paymentData.name} already exists`);
+    }
+  }
 
   paymentsRepository.update(id, paymentData);
   return { ...existing, ...paymentData };

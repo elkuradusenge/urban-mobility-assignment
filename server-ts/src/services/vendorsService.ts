@@ -10,6 +10,10 @@ const getVendorById = (id: number): Vendor | undefined => {
 };
 
 const createVendor = (vendor: Vendor): Vendor => {
+  const existing = vendorsRepository.findByEmail(vendor.email);
+  if (existing) {
+    throw new Error(`Vendor with email ${vendor.email} already exists`);
+  }
   const id = vendorsRepository.create(vendor);
   return { ...vendor, id };
 };
@@ -20,6 +24,13 @@ const updateVendor = (
 ): Vendor | undefined => {
   const existing = vendorsRepository.findById(id);
   if (!existing) return undefined;
+
+  if (vendorData.email) {
+    const existingEmail = vendorsRepository.findByEmail(vendorData.email);
+    if (existingEmail && existingEmail.id !== id) {
+      throw new Error(`Vendor with email ${vendorData.email} already exists`);
+    }
+  }
 
   vendorsRepository.update(id, vendorData);
   return { ...existing, ...vendorData };
