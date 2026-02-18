@@ -1,0 +1,190 @@
+openapi: 3.0.0
+info:
+  title: Urban Mobility API
+  version: 1.0.0
+paths:
+  /vendors:
+    get:
+      summary: Returns the list of all the vendors
+      tags: [Vendors]
+      responses:
+        200:
+          description: The list of the vendors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Vendor"
+                  message:
+                    type: string
+        500:
+          description: Server error
+    post:
+      summary: Create a new vendor
+      tags: [Vendors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VendorInput"
+      responses:
+        201:
+          description: The created vendor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Vendor"
+                  message:
+                    type: string
+        400:
+          description: Missing required fields
+        409:
+          description: Vendor already exists (email unique)
+        500:
+          description: Server error
+  /vendors/{id}:
+    get:
+      summary: Get the vendor by id
+      tags: [Vendors]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The vendor id
+      responses:
+        200:
+          description: The vendor description by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Vendor"
+                  message:
+                    type: string
+        404:
+          description: Vendor not found
+        500:
+          description: Server error
+    put:
+      summary: Update the vendor by the id
+      tags: [Vendors]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The vendor id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VendorInput"
+      responses:
+        200:
+          description: The vendor was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Vendor"
+                  message:
+                    type: string
+        404:
+          description: Vendor not found
+        409:
+          description: Email already in use
+        500:
+          description: Server error
+    delete:
+      summary: Remove the vendor by id
+      tags: [Vendors]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The vendor id
+      responses:
+        200:
+          description: The vendor was deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Vendor not found
+        500:
+          description: Server error
+
+components:
+  schemas:
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the vendor
+        name:
+          type: string
+          description: The name of the vendor
+        email:
+          type: string
+          description: The email of the vendor
+        phone_number:
+          type: string
+          description: The phone number of the vendor
+      example:
+        id: 1
+        name: Michael Johnson
+        email: michael.johnson@nycdispatch.com
+        phone_number: +1-212-555-0141
+    VendorInput:
+      type: object
+      required:
+        - name
+        - email
+        - phone_number
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+      example:
+        name: New Vendor
+        email: new.vendor@example.com
+        phone_number: +1-555-000-0000
+tags:
+  - name: Vendors
+    description: The vendors managing API

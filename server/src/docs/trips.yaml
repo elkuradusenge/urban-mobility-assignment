@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  title: Urban Mobility API
+  version: 1.0.0
+paths:
+  /trips:
+    get:
+      summary: Returns the list of all the trips
+      tags: [Trips]
+      responses:
+        200:
+          description: The list of the trips
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Trip"
+                  message:
+                    type: string
+        500:
+          description: Server error
+    post:
+      summary: Create a new trip
+      tags: [Trips]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TripInput"
+      responses:
+        201:
+          description: The created trip
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Trip"
+                  message:
+                    type: string
+        400:
+          description: Missing required fields or constraint violation
+        500:
+          description: Server error
+  /trips/{id}:
+    get:
+      summary: Get the trip by id
+      tags: [Trips]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The trip id
+      responses:
+        200:
+          description: The trip description by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Trip"
+                  message:
+                    type: string
+        404:
+          description: Trip not found
+        500:
+          description: Server error
+    put:
+      summary: Update the trip by the id
+      tags: [Trips]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The trip id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TripInput"
+      responses:
+        200:
+          description: The trip was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/components/schemas/Trip"
+                  message:
+                    type: string
+        404:
+          description: Trip not found
+        400:
+          description: Constraint violation
+        500:
+          description: Server error
+    delete:
+      summary: Remove the trip by id
+      tags: [Trips]
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The trip id
+      responses:
+        200:
+          description: The trip was deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        404:
+          description: Trip not found
+        500:
+          description: Server error
+
+components:
+  schemas:
+    Trip:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The auto-generated id of the trip
+        vendor_id:
+          type: integer
+        pickup_datetime:
+          type: string
+          format: date-time
+        dropoff_datetime:
+          type: string
+          format: date-time
+        passenger_count:
+          type: integer
+        trip_distance:
+          type: number
+          format: float
+        mta_tax:
+          type: number
+          format: float
+        pickup_location_id:
+          type: integer
+        dropoff_location_id:
+          type: integer
+        tip_amount:
+          type: number
+          format: float
+        fare_amount:
+          type: number
+          format: float
+        total_amount:
+          type: number
+          format: float
+      example:
+        id: 1
+        vendor_id: 1
+        pickup_datetime: "2019-01-01 00:10:00"
+        dropoff_datetime: "2019-01-01 00:20:00"
+        passenger_count: 1
+        trip_distance: 2.5
+        mta_tax: 0.5
+        pickup_location_id: 1
+        dropoff_location_id: 2
+        tip_amount: 1.0
+        fare_amount: 10.0
+        total_amount: 11.5
+    TripInput:
+      type: object
+      required:
+        - vendor_id
+        - pickup_datetime
+        - dropoff_datetime
+        - passenger_count
+        - trip_distance
+        - pickup_location_id
+        - dropoff_location_id
+        - fare_amount
+        - total_amount
+      properties:
+        vendor_id:
+          type: integer
+        pickup_datetime:
+          type: string
+          format: date-time
+        dropoff_datetime:
+          type: string
+          format: date-time
+        passenger_count:
+          type: integer
+        trip_distance:
+          type: number
+          format: float
+        mta_tax:
+          type: number
+          format: float
+        pickup_location_id:
+          type: integer
+        dropoff_location_id:
+          type: integer
+        tip_amount:
+          type: number
+          format: float
+        fare_amount:
+          type: number
+          format: float
+        total_amount:
+          type: number
+          format: float
+      example:
+        vendor_id: 1
+        pickup_datetime: "2019-01-01 00:10:00"
+        dropoff_datetime: "2019-01-01 00:20:00"
+        passenger_count: 1
+        trip_distance: 2.5
+        mta_tax: 0.5
+        pickup_location_id: 1
+        dropoff_location_id: 2
+        tip_amount: 1.0
+        fare_amount: 10.0
+        total_amount: 11.5
+tags:
+  - name: Trips
+    description: The trips managing API
