@@ -178,19 +178,35 @@
           <p>${vendor.phone_number}</p>
           <div class="vendor-bottom">
             <span class="vendor-id">Vendor #${vendor.id}</span>
-            <span class="trips-count">0 trips</span>
+            <span class="trips-count">${vendor.trips || 0} trips</span>
           </div>
         </article>
       `,
       )
       .join("");
+      console.log(vendors);
+  };
+  const getTrips = async () => {
+    const response = await requestVendors("/trips");
+    const payload = await response.json();
+    if (Array.isArray(payload)) return payload;
+    if (payload?.success && Array.isArray(payload.data)) return payload.data;
+    if (Array.isArray(payload?.data)) return payload.data;
   };
 
   const loadVendors = async () => {
     const vendors = await getVendors();
-    vendorsCache = vendors;
-    renderVendors(vendorsCache);
-    updateVendorCount();
+   await getTrips().then((trips) => {
+
+      // get vendor trip counts by getting all tribs and counting how many trips each vendor has
+      const vendorTripCounts = vendors.map((vendor) => {
+        const count = trips.filter((trip) => trip.vendor_id === vendor.id).length;
+        return { ...vendor, trips: count };
+      });
+      vendorsCache = vendorTripCounts;
+      renderVendors(vendorsCache);
+      updateVendorCount();
+    })
   };
 
   const openAddCard = () => {
