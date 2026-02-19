@@ -390,7 +390,6 @@ class DataNormalizer:
         for col, precision in numeric_precision.items():
             if col in df.columns:
                 df[col] = df[col].round(precision)
-                print(f"  Rounded {col} to {precision} decimal places")
         
         # Ensure integer fields are proper integers
         integer_fields = ['VendorID', 'passenger_count', 'RatecodeID', 
@@ -399,7 +398,6 @@ class DataNormalizer:
         for col in integer_fields:
             if col in df.columns:
                 df[col] = df[col].astype(int)
-                print(f"  Converted {col} to integer")
         
         print(f"✓ Numeric field normalization complete")
         
@@ -412,7 +410,7 @@ class DataNormalizer:
         # Standardize store_and_fwd_flag
         if 'store_and_fwd_flag' in df.columns:
             df['store_and_fwd_flag'] = df['store_and_fwd_flag'].str.upper()
-            print(f"  Standardized store_and_fwd_flag to uppercase")
+
         
         # Standardize zone names (strip whitespace, title case)
         zone_cols = ['pickup_borough', 'pickup_zone', 'pickup_service_zone',
@@ -421,7 +419,6 @@ class DataNormalizer:
         for col in zone_cols:
             if col in df.columns:
                 df[col] = df[col].str.strip()
-                print(f"  Standardized {col}")
         
         # Create categorical codes for efficient storage
         categorical_mappings = {}
@@ -430,8 +427,6 @@ class DataNormalizer:
             if col in df.columns:
                 df[col] = df[col].astype('category')
                 categorical_mappings[col] = dict(enumerate(df[col].cat.categories))
-        
-        print(f"✓ Categorical field normalization complete")
         
         return df, categorical_mappings
 
