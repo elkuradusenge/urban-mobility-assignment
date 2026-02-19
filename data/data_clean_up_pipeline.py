@@ -281,8 +281,6 @@ class DataCleaner:
         df = df[~passenger_outliers]
         self.report.append(f"  Passenger count outliers removed: {outlier_count}\n")
         
-        # 4. Temporal outliers (trip duration)
-        print("\n4. Temporal Outliers:")
         df['trip_duration_minutes'] = (
             pd.to_datetime(df['tpep_dropoff_datetime']) - 
             pd.to_datetime(df['tpep_pickup_datetime'])
@@ -296,8 +294,8 @@ class DataCleaner:
         df = df[~temporal_outliers]
         self.report.append(f"  Temporal outliers removed: {outlier_count}\n")
         
-        # 5. Logical outliers (dropoff before pickup)
-        print("\n5. Logical Outliers:")
+        # 4. Logical outliers (dropoff before pickup)
+        print("\n4. Logical Outliers:")
         logical_outliers = df['trip_duration_minutes'] < 0
         outlier_count = logical_outliers.sum()
         if outlier_count > 0:
@@ -306,7 +304,7 @@ class DataCleaner:
         else:
             print(f"   No logical inconsistencies found")
         
-        # 6. Total amount validation
+        # 5. Total amount consistency check
         df['calculated_total'] = (
             df['fare_amount'] + df['extra'] + df['mta_tax'] + 
             df['tip_amount'] + df['tolls_amount'] + 
