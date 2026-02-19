@@ -48,8 +48,7 @@ const validateForeignKeys = (trip) => {
 
 const createTrip = (trip) => {
   validateForeignKeys(trip);
-  const id = tripsRepository.create(trip);
-  return { ...trip, id };
+  return tripsRepository.create(trip);
 };
 
 const normalizeTripPatch = (tripData) => {
@@ -89,8 +88,7 @@ const updateTrip = (id, tripData) => {
 
   validateForeignKeys(patch);
 
-  tripsRepository.update(id, patch);
-  return tripsRepository.findById(id) || { ...existing, ...patch };
+  return tripsRepository.update(id, patch);
 };
 
 const deleteTrip = (id) => {

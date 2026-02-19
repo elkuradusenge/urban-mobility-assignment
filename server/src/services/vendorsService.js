@@ -13,8 +13,7 @@ const createVendor = (vendor) => {
   if (existing) {
     throw new Error(`Vendor with email ${vendor.email} already exists`);
   }
-  const id = vendorsRepository.create(vendor);
-  return { ...vendor, id };
+  return vendorsRepository.create(vendor);
 };
 
 const updateVendor = (
@@ -31,8 +30,7 @@ const updateVendor = (
     }
   }
 
-  vendorsRepository.update(id, vendorData);
-  return { ...existing, ...vendorData };
+  return vendorsRepository.update(id, vendorData);
 };
 
 const deleteVendor = (id) => {

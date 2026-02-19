@@ -22,9 +22,9 @@ const create = (trip) => {
         tip_amount, 
         fare_amount, 
         total_amount
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *`,
   );
-  const executionResult = insertStatement.run(
+  return insertStatement.get(
     trip.vendor_id,
     trip.pickup_datetime,
     trip.dropoff_datetime,
@@ -37,20 +37,19 @@ const create = (trip) => {
     trip.fare_amount,
     trip.total_amount,
   );
-  return executionResult.lastInsertRowid;
 };
 
 const update = (id, trip) => {
   const keys = Object.keys(trip);
-  if (keys.length === 0) return;
+  if (keys.length === 0) return db.prepare("SELECT * FROM trips WHERE id = ?").get(id);
 
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
   const values = keys.map((key) => trip[key]);
 
   const updateStatement = db.prepare(
-    `UPDATE trips SET ${setClause} WHERE id = ?`,
+    `UPDATE trips SET ${setClause} WHERE id = ? RETURNING *`,
   );
-  updateStatement.run(...values, id);
+  return updateStatement.get(...values, id);
 };
 
 const deleteById = (id) => {

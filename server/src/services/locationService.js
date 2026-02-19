@@ -9,8 +9,7 @@ const getLocationById = (id) => {
 };
 
 const createLocation = (location) => {
-  const id = locationRepository.create(location);
-  return { ...location, location_id: id };
+  return locationRepository.create(location);
 };
 
 const updateLocation = (
@@ -20,8 +19,7 @@ const updateLocation = (
   const existing = locationRepository.findById(id);
   if (!existing) return undefined;
 
-  locationRepository.update(id, locationData);
-  return { ...existing, ...locationData };
+  return locationRepository.update(id, locationData);
 };
 
 const deleteLocation = (id) => {
