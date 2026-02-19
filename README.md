@@ -1,7 +1,4 @@
-# Data cleaning
-[TBD]
-
-# API
+# Urban Mobility Assignment
 ## How to start the server
 - Clone the repo `git clone https://github.com/elkuradusenge/urban-mobility-assignment.git`
 - Change the directory `cd server`
