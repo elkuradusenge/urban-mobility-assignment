@@ -30,6 +30,15 @@
   let paymentsCache = [];
   let currentEditingPaymentId = null;
 
+  const searchPayment = document.querySelector("#search-payment");
+  const sortPaymentsSelect = document.querySelector("#sort-payments");
+  const resetPaymentFilters = document.querySelector("#reset-payment-filters");
+
+  const filters = {
+    search: "",
+    sort: "name-asc"
+  };
+
   if (
     !paymentTableBody ||
     !paymentCount ||
@@ -40,7 +49,10 @@
     !editPaymentCard ||
     !closeEditPayment ||
     !cancelEditPayment ||
-    !editPaymentForm
+    !editPaymentForm ||
+    !searchPayment ||
+    !sortPaymentsSelect ||
+    !resetPaymentFilters
   ) {
     return;
   }
@@ -129,10 +141,41 @@
     paymentCount.textContent = "0 payment methods total";
   };
 
-  const renderPayments = () => {
+  const matchesFilters = (payment) => {
+    const searchTerm = filters.search.toLowerCase().trim();
+    if (searchTerm && !payment.name.toLowerCase().includes(searchTerm)) {
+      return false;
+    }
+    return true;
+  };
+
+  const sortPaymentsArray = (payments) => {
+    const sorted = [...payments];
+    const sortBy = filters.sort;
+
+    if (sortBy === "name-asc") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "name-desc") {
+      sorted.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortBy === "id-asc") {
+      sorted.sort((a, b) => a.id - b.id);
+    } else if (sortBy === "id-desc") {
+      sorted.sort((a, b) => b.id - a.id);
+    }
+
+    return sorted;
+  };
+
+  const applyFiltersAndSort = () => {
+    const filtered = paymentsCache.filter(matchesFilters);
+    const sorted = sortPaymentsArray(filtered);
+    renderPayments(sorted);
+  };
+
+  const renderPayments = (payments) => {
     paymentCount.textContent = `${paymentsCache.length} payment methods total`;
 
-    if (!paymentsCache.length) {
+    if (!payments.length) {
       paymentTableBody.innerHTML = `
         <tr>
           <td colspan="3">No payment methods found.</td>
@@ -141,7 +184,7 @@
       return;
     }
 
-    paymentTableBody.innerHTML = paymentsCache
+    paymentTableBody.innerHTML = payments
       .map(
         (payment) => `
           <tr>
@@ -165,7 +208,7 @@
 
   const reloadPayments = async () => {
     paymentsCache = await getPayments();
-    renderPayments();
+    applyFiltersAndSort();
   };
 
   const openAddCard = () => {
@@ -262,6 +305,24 @@
       if (editNameInput) editNameInput.value = payment.name || "";
       openEditCard();
     }
+  });
+
+  searchPayment.addEventListener("input", () => {
+    filters.search = searchPayment.value;
+    applyFiltersAndSort();
+  });
+
+  sortPaymentsSelect.addEventListener("change", () => {
+    filters.sort = sortPaymentsSelect.value;
+    applyFiltersAndSort();
+  });
+
+  resetPaymentFilters.addEventListener("click", () => {
+    filters.search = "";
+    filters.sort = "name-asc";
+    searchPayment.value = "";
+    sortPaymentsSelect.value = "name-asc";
+    applyFiltersAndSort();
   });
 
   const init = async () => {

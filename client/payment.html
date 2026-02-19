@@ -69,8 +69,23 @@
             </form>
           </section>
 
-          <div class="payment-filters" role="tablist" aria-label="Payment filter">
-            <button class="filter-btn active" type="button" data-filter="all">All</button>
+          <div class="filter-sort-controls">
+            <div class="filter-group">
+              <label for="search-payment">Search</label>
+              <input type="text" id="search-payment" placeholder="Search payment method...">
+            </div>
+
+            <div class="filter-group">
+              <label for="sort-payments">Sort By</label>
+              <select id="sort-payments">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="id-asc">ID (Ascending)</option>
+                <option value="id-desc">ID (Descending)</option>
+              </select>
+            </div>
+
+            <button id="reset-payment-filters" class="btn-secondary">Reset</button>
           </div>
 
           <div class="payment-table-wrap">

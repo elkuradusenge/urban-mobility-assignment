@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Overview</title>
   <link rel="stylesheet" href="./assets/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body data-page-title="Dashboard Overview">
   <div class="app-shell">
@@ -31,53 +32,221 @@
       </header>
 
       <main class="main-content">
-        <section class="stats-grid">
-          <article class="stat-card">
-            <div>
-              <p class="stat-label">Total Trips</p>
-              <p id="total-trips" class="stat-value">0</p>
-            </div>
-            <span class="stat-icon blue">T</span>
-          </article>
+        <div class="dashboard-tabs">
+          <button class="tab-button active" data-tab="overview">Overview</button>
+          <button class="tab-button" data-tab="analytics">Analytics</button>
+          <button class="tab-button" data-tab="performance">Performance</button>
+          <button class="tab-button" data-tab="insights">Insights</button>
+        </div>
 
-          <article class="stat-card">
-            <div>
-              <p class="stat-label">Total Vendors</p>
-              <p id="total-vendors" class="stat-value">0</p>
-            </div>
-            <span class="stat-icon teal">V</span>
-          </article>
 
-          <article class="stat-card">
-            <div>
-              <p class="stat-label">Total Payments</p>
-              <p id="total-payments" class="stat-value">0</p>
-            </div>
-            <span class="stat-icon amber">P</span>
-          </article>
-        </section>
+        <div class="tab-content active" id="overview-tab">
+          <section class="stats-grid">
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Total Trips</p>
+                <p id="total-trips" class="stat-value">0</p>
+              </div>
+              <span class="stat-icon blue">T</span>
+            </article>
 
-        <section class="panel">
-          <h2>Recent Trips</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>From</th>
-                  <th>To</th>
-                  <th>Vendor</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="recent-trips-body">
-                <tr>
-                  <td colspan="5">Loading recent trips...</td>
-                </tr>
-              </tbody>
-            </table>
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Total Vendors</p>
+                <p id="total-vendors" class="stat-value">0</p>
+              </div>
+              <span class="stat-icon teal">V</span>
+            </article>
+
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Total Payments</p>
+                <p id="total-payments" class="stat-value">0</p>
+              </div>
+              <span class="stat-icon amber">P</span>
+            </article>
+
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Avg Trip Value</p>
+                <p id="avg-trip-value" class="stat-value">0</p>
+              </div>
+              <span class="stat-icon green">A</span>
+            </article>
+          </section>
+
+          <section class="panel">
+            <h2>Recent Trips</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Vendor</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-trips-body">
+                  <tr>
+                    <td colspan="5">Loading recent trips...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="tab-content" id="analytics-tab">
+          <div class="analytics-grid">
+            <section class="panel chart-panel">
+              <h2>Revenue Trends</h2>
+              <div class="chart-container">
+                <canvas id="revenue-chart"></canvas>
+              </div>
+            </section>
+
+            <section class="panel chart-panel">
+              <h2>Trip Distribution by Payment Type</h2>
+              <div class="chart-container">
+                <canvas id="payment-chart"></canvas>
+              </div>
+            </section>
+
+            <section class="panel chart-panel">
+              <h2>Vendor Performance</h2>
+              <div class="chart-container">
+                <canvas id="vendor-chart"></canvas>
+              </div>
+            </section>
+
+            <section class="panel chart-panel">
+              <h2>Trip Distance Analysis</h2>
+              <div class="chart-container">
+                <canvas id="distance-chart"></canvas>
+              </div>
+            </section>
           </div>
-        </section>
+        </div>
+
+        <div class="tab-content" id="performance-tab">
+          <section class="stats-grid">
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Avg Trip Distance</p>
+                <p id="avg-distance" class="stat-value">0 mi</p>
+                <p class="stat-trend up">↑ 5.2%</p>
+              </div>
+              <span class="stat-icon blue">D</span>
+            </article>
+
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Avg Trip Duration</p>
+                <p id="avg-duration" class="stat-value">0 min</p>
+                <p class="stat-trend down">↓ 2.1%</p>
+              </div>
+              <span class="stat-icon teal">T</span>
+            </article>
+
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Total Revenue</p>
+                <p id="total-revenue" class="stat-value">0</p>
+                <p class="stat-trend up">↑ 12.3%</p>
+              </div>
+              <span class="stat-icon amber">R</span>
+            </article>
+
+            <article class="stat-card">
+              <div>
+                <p class="stat-label">Peak Hour</p>
+                <p id="peak-hour" class="stat-value">--:--</p>
+                <p class="stat-trend neutral">Most active</p>
+              </div>
+              <span class="stat-icon green">H</span>
+            </article>
+          </section>
+
+          <div class="performance-grid">
+            <section class="panel">
+              <h2>Top Performing Vendors</h2>
+              <div id="top-vendors-list" class="performance-list">
+                <div class="loading">Loading vendor data...</div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2>Popular Routes</h2>
+              <div id="popular-routes-list" class="performance-list">
+                <div class="loading">Loading route data...</div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="insights-tab">
+          <section class="panel insight-panel">
+            <h2>Key Insights</h2>
+            <div id="insights-container" class="insights-grid">
+              <div class="insight-card">
+                <h3>Revenue Growth</h3>
+                <p class="insight-text">Analyzing revenue patterns...</p>
+              </div>
+              
+              <div class="insight-card">
+                <h3>Trip Patterns</h3>
+                <p class="insight-text">Analyzing trip patterns...</p>
+              </div>
+              
+              <div class="insight-card">
+                <h3>Payment Trends</h3>
+                <p class="insight-text">Analyzing payment methods...</p>
+              </div>
+              
+              <div class="insight-card">
+                <h3>Vendor Performance</h3>
+                <p class="insight-text">Analyzing vendor performance...</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2>Data Quality Metrics</h2>
+            <div class="quality-metrics">
+              <div class="metric-item">
+                <div class="metric-bar">
+                  <div class="metric-fill" id="data-completeness" style="width: 0%"></div>
+                </div>
+                <div class="metric-labels">
+                  <span>Data Completeness</span>
+                  <span id="completeness-pct">0%</span>
+                </div>
+              </div>
+              
+              <div class="metric-item">
+                <div class="metric-bar">
+                  <div class="metric-fill" id="data-accuracy" style="width: 0%"></div>
+                </div>
+                <div class="metric-labels">
+                  <span>Data Accuracy</span>
+                  <span id="accuracy-pct">0%</span>
+                </div>
+              </div>
+              
+              <div class="metric-item">
+                <div class="metric-bar">
+                  <div class="metric-fill" id="system-health" style="width: 0%"></div>
+                </div>
+                <div class="metric-labels">
+                  <span>System Health</span>
+                  <span id="health-pct">0%</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
     </div>
   </div>

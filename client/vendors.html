@@ -96,6 +96,35 @@
             </form>
           </section>
 
+          <div class="filter-sort-controls">
+            <div class="filter-group">
+              <label for="rating-filter">Rating</label>
+              <select id="rating-filter">
+                <option value="all">All Ratings</option>
+                <option value="4+">4+ Stars</option>
+                <option value="3-4">3 - 4 Stars</option>
+                <option value="below-3">Below 3 Stars</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label for="search-vendor">Search</label>
+              <input type="text" id="search-vendor" placeholder="Search by name...">
+            </div>
+
+            <div class="filter-group">
+              <label for="sort-vendors">Sort By</label>
+              <select id="sort-vendors">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="rating-high">Rating (High to Low)</option>
+                <option value="rating-low">Rating (Low to High)</option>
+              </select>
+            </div>
+
+            <button id="reset-vendor-filters" class="btn-secondary">Reset</button>
+          </div>
+
           <section id="vendors-grid" class="vendors-grid">
             <article class="vendor-card vendor-card--message">
               <p>Loading vendors...</p>
