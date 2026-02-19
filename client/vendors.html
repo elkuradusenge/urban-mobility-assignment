@@ -67,69 +67,38 @@
             </form>
           </section>
 
+          <section id="edit-vendor-card" class="add-vendor-card hidden">
+            <div class="add-vendor-header">
+              <h2>Edit Vendor</h2>
+              <button id="close-edit-vendor" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="edit-vendor-form" class="vendor-form">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Vendor name" required>
+              </label>
+
+              <label>
+                Email
+                <input type="email" name="email" placeholder="email@example.com" required>
+              </label>
+
+              <label>
+                Phone
+                <input type="text" name="phone" placeholder="+250 ..." required>
+              </label>
+
+              <div class="form-actions">
+                <button id="cancel-edit-vendor" class="btn-secondary" type="button">Cancel</button>
+                <button class="btn-primary form-submit" type="submit">Save</button>
+              </div>
+            </form>
+          </section>
+
           <section id="vendors-grid" class="vendors-grid">
-            <article class="vendor-card">
-              <div class="vendor-top">
-                <h3>TransRwanda</h3>
-                <div class="card-actions">
-                  <button class="action-btn" type="button">Edit</button>
-                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
-                </div>
-              </div>
-              <p>info@transrwanda.rw</p>
-              <p>+250 788 000 001</p>
-              <div class="vendor-bottom">
-                <span class="rating">* 4.5</span>
-                <span class="trips-count">120 trips</span>
-              </div>
-            </article>
-
-            <article class="vendor-card">
-              <div class="vendor-top">
-                <h3>Volcano Express</h3>
-                <div class="card-actions">
-                  <button class="action-btn" type="button">Edit</button>
-                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
-                </div>
-              </div>
-              <p>hello@volcanoexpress.rw</p>
-              <p>+250 788 000 002</p>
-              <div class="vendor-bottom">
-                <span class="rating">* 4.2</span>
-                <span class="trips-count">85 trips</span>
-              </div>
-            </article>
-
-            <article class="vendor-card">
-              <div class="vendor-top">
-                <h3>Lake Shuttle</h3>
-                <div class="card-actions">
-                  <button class="action-btn" type="button">Edit</button>
-                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
-                </div>
-              </div>
-              <p>contact@lakeshuttle.rw</p>
-              <p>+250 788 000 003</p>
-              <div class="vendor-bottom">
-                <span class="rating">* 3.8</span>
-                <span class="trips-count">45 trips</span>
-              </div>
-            </article>
-
-            <article class="vendor-card">
-              <div class="vendor-top">
-                <h3>Highland Movers</h3>
-                <div class="card-actions">
-                  <button class="action-btn" type="button">Edit</button>
-                  <button class="action-btn danger js-delete-vendor" type="button">Delete</button>
-                </div>
-              </div>
-              <p>info@highlandmovers.rw</p>
-              <p>+250 788 000 004</p>
-              <div class="vendor-bottom">
-                <span class="rating">* 4.7</span>
-                <span class="trips-count">200 trips</span>
-              </div>
+            <article class="vendor-card vendor-card--message">
+              <p>Loading vendors...</p>
             </article>
           </section>
         </section>

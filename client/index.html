@@ -35,7 +35,7 @@
           <article class="stat-card">
             <div>
               <p class="stat-label">Total Trips</p>
-              <p class="stat-value">6</p>
+              <p id="total-trips" class="stat-value">0</p>
             </div>
             <span class="stat-icon blue">T</span>
           </article>
@@ -43,7 +43,7 @@
           <article class="stat-card">
             <div>
               <p class="stat-label">Total Vendors</p>
-              <p class="stat-value">4</p>
+              <p id="total-vendors" class="stat-value">0</p>
             </div>
             <span class="stat-icon teal">V</span>
           </article>
@@ -51,17 +51,9 @@
           <article class="stat-card">
             <div>
               <p class="stat-label">Total Payments</p>
-              <p class="stat-value">6</p>
+              <p id="total-payments" class="stat-value">0</p>
             </div>
             <span class="stat-icon amber">P</span>
-          </article>
-
-          <article class="stat-card">
-            <div>
-              <p class="stat-label">Total Revenue (RWF)</p>
-              <p class="stat-value">15,000</p>
-            </div>
-            <span class="stat-icon green">$</span>
           </article>
         </section>
 
@@ -78,41 +70,9 @@
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="recent-trips-body">
                 <tr>
-                  <td>Kigali</td>
-                  <td>Butare</td>
-                  <td>TransRwanda</td>
-                  <td>5,000 RWF</td>
-                  <td><span class="status completed">Completed</span></td>
-                </tr>
-                <tr>
-                  <td>Kigali</td>
-                  <td>Gisenyi</td>
-                  <td>Volcano Express</td>
-                  <td>7,500 RWF</td>
-                  <td><span class="status scheduled">Scheduled</span></td>
-                </tr>
-                <tr>
-                  <td>Butare</td>
-                  <td>Cyangugu</td>
-                  <td>Lake Shuttle</td>
-                  <td>4,000 RWF</td>
-                  <td><span class="status progress">In Progress</span></td>
-                </tr>
-                <tr>
-                  <td>Kigali</td>
-                  <td>Musanze</td>
-                  <td>TransRwanda</td>
-                  <td>6,000 RWF</td>
-                  <td><span class="status completed">Completed</span></td>
-                </tr>
-                <tr>
-                  <td>Gisenyi</td>
-                  <td>Kigali</td>
-                  <td>Volcano Express</td>
-                  <td>7,500 RWF</td>
-                  <td><span class="status cancelled">Cancelled</span></td>
+                  <td colspan="5">Loading recent trips...</td>
                 </tr>
               </tbody>
             </table>
@@ -123,5 +83,6 @@
   </div>
 
   <script src="./assets/Js/main.js"></script>
+  <script src="./assets/Js/dashboard.js"></script>
 </body>
 </html>

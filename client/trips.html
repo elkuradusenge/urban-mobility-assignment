@@ -97,6 +97,56 @@
             </form>
           </section>
 
+          <section id="edit-trip-card" class="add-trip-card hidden">
+            <div class="add-trip-header">
+              <h2>Edit Trip</h2>
+              <button id="close-edit-trip" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="edit-trip-form" class="trip-form">
+              <label>
+                From
+                <select name="from" required>
+                  <option value="" selected disabled>Select origin</option>
+                </select>
+              </label>
+
+              <label>
+                To
+                <select name="to" required>
+                  <option value="" selected disabled>Select destination</option>
+                </select>
+              </label>
+
+              <label>
+                Vendor
+                <select name="vendor" required>
+                  <option value="" selected disabled>Select vendor</option>
+                </select>
+              </label>
+
+              <label>
+                Price (RWF)
+                <input type="number" name="price" min="0" placeholder="0" required>
+              </label>
+
+              <label>
+                Status
+                <select name="status" required>
+                  <option>Scheduled</option>
+                  <option>Completed</option>
+                  <option>In Progress</option>
+                  <option>Cancelled</option>
+                </select>
+              </label>
+
+              <div class="form-actions">
+                <button class="btn-secondary" id="cancel-edit-trip" type="button">Cancel</button>
+                <button class="btn-primary form-submit" type="submit">Save</button>
+              </div>
+            </form>
+          </section>
+
           <div class="trip-table-wrap">
             <table class="trip-table">
               <thead>

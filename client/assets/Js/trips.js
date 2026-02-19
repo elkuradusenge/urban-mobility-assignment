@@ -5,6 +5,10 @@
   const addTripCard = document.querySelector("#add-trip-card");
   const closeAddTrip = document.querySelector("#close-add-trip");
   const addTripForm = document.querySelector("#add-trip-form");
+  const editTripCard = document.querySelector("#edit-trip-card");
+  const closeEditTrip = document.querySelector("#close-edit-trip");
+  const cancelEditTrip = document.querySelector("#cancel-edit-trip");
+  const editTripForm = document.querySelector("#edit-trip-form");
   const editIcon = `
     <svg class="edit-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M4 20l4.5-1 10-10a1.8 1.8 0 0 0 0-2.5l-1-1a1.8 1.8 0 0 0-2.5 0l-10 10L4 20z"></path>
@@ -21,16 +25,30 @@
     </svg>
   `;
   let tripsCache = [];
+  let currentEditingTripId = null;
 
   if (!tripTableBody || !tripCount) {
     return;
   }
 
-  const openAddCard = () => addTripCard?.classList.remove("hidden");
+  const openAddCard = () => {
+    editTripCard?.classList.add("hidden");
+    addTripCard?.classList.remove("hidden");
+  };
   const closeAddCard = () => addTripCard?.classList.add("hidden");
+  const openEditCard = () => {
+    addTripCard?.classList.add("hidden");
+    editTripCard?.classList.remove("hidden");
+  };
+  const closeEditCard = () => {
+    editTripCard?.classList.add("hidden");
+    currentEditingTripId = null;
+  };
 
   addTripToggle?.addEventListener("click", openAddCard);
   closeAddTrip?.addEventListener("click", closeAddCard);
+  closeEditTrip?.addEventListener("click", closeEditCard);
+  cancelEditTrip?.addEventListener("click", closeEditCard);
 
   const formatCurrency = (value) => {
     const numeric = Number(value);
@@ -206,7 +224,7 @@
     )}`;
   };
 
-  const buildTripPayload = (formData) => {
+  const buildTripPayload = (formData, existingTrip = null) => {
     const pickupLocationId = Number(formData.get("from"));
     const dropoffLocationId = Number(formData.get("to"));
     const vendorId = Number(formData.get("vendor"));
@@ -237,8 +255,8 @@
       dropoffDate = new Date(now.getTime() + 25 * 60 * 1000);
     }
 
-    const mtaTax = 0.5;
-    const tipAmount = 0;
+    const mtaTax = Number(existingTrip?.mta_tax ?? 0.5);
+    const tipAmount = Number(existingTrip?.tip_amount ?? 0);
     const fareAmount = price;
     const totalAmount = fareAmount + mtaTax + tipAmount;
 
@@ -246,8 +264,8 @@
       vendor_id: vendorId,
       pickup_datetime: formatSqlDateTime(pickupDate),
       dropoff_datetime: formatSqlDateTime(dropoffDate),
-      passenger_count: 1,
-      trip_distance: 1,
+      passenger_count: Number(existingTrip?.passenger_count ?? 1),
+      trip_distance: Number(existingTrip?.trip_distance ?? 1),
       mta_tax: mtaTax,
       pickup_location_id: pickupLocationId,
       dropoff_location_id: dropoffLocationId,
@@ -274,20 +292,44 @@
   };
 
   const loadFormOptions = async () => {
-    if (!addTripForm) return;
+    if (!addTripForm && !editTripForm) return;
 
     const [vendors, locations] = await Promise.all([
       getCollection("/vendors"),
       getCollection("/locations"),
     ]);
 
-    const vendorSelect = addTripForm.querySelector("select[name='vendor']");
-    const fromSelect = addTripForm.querySelector("select[name='from']");
-    const toSelect = addTripForm.querySelector("select[name='to']");
+    const fillAllFormSelects = (form) => {
+      if (!form) return;
+      const vendorSelect = form.querySelector("select[name='vendor']");
+      const fromSelect = form.querySelector("select[name='from']");
+      const toSelect = form.querySelector("select[name='to']");
+      fillSelect(vendorSelect, vendors, "id", "name");
+      fillSelect(fromSelect, locations, "location_id", "zone");
+      fillSelect(toSelect, locations, "location_id", "zone");
+    };
 
-    fillSelect(vendorSelect, vendors, "id", "name");
-    fillSelect(fromSelect, locations, "location_id", "zone");
-    fillSelect(toSelect, locations, "location_id", "zone");
+    fillAllFormSelects(addTripForm);
+    fillAllFormSelects(editTripForm);
+  };
+
+  const prefillEditForm = (trip) => {
+    if (!editTripForm) return;
+
+    const fromSelect = editTripForm.querySelector("select[name='from']");
+    const toSelect = editTripForm.querySelector("select[name='to']");
+    const vendorSelect = editTripForm.querySelector("select[name='vendor']");
+    const priceInput = editTripForm.querySelector("input[name='price']");
+    const statusSelect = editTripForm.querySelector("select[name='status']");
+
+    if (fromSelect) fromSelect.value = String(trip.pickup_location_id ?? "");
+    if (toSelect) toSelect.value = String(trip.dropoff_location_id ?? "");
+    if (vendorSelect) vendorSelect.value = String(trip.vendor_id ?? "");
+    if (priceInput) {
+      const formPrice = Number(trip.fare_amount ?? trip.total_amount ?? 0);
+      priceInput.value = String(Number.isNaN(formPrice) ? 0 : formPrice);
+    }
+    if (statusSelect) statusSelect.value = resolveStatus(trip);
   };
 
   addTripForm?.addEventListener("submit", async (event) => {
@@ -303,6 +345,32 @@
     } catch (error) {
       console.error("Failed to create trip:", error);
       window.alert(error.message || "Failed to create trip.");
+    }
+  });
+
+  editTripForm?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (currentEditingTripId == null) {
+      window.alert("No trip selected for edit.");
+      return;
+    }
+
+    const currentTrip = tripsCache.find((trip) => trip.id === currentEditingTripId);
+    if (!currentTrip) {
+      window.alert("Trip not found.");
+      return;
+    }
+
+    try {
+      const formData = new FormData(editTripForm);
+      const payload = buildTripPayload(formData, currentTrip);
+      await updateTrip(currentEditingTripId, payload);
+      closeEditCard();
+      await reloadTrips();
+    } catch (error) {
+      console.error("Failed to update trip:", error);
+      window.alert(error.message || "Failed to update trip.");
     }
   });
 
@@ -340,25 +408,9 @@
         return;
       }
 
-      const totalAmountInput = window.prompt(
-        "New total amount",
-        String(currentTrip.total_amount ?? ""),
-      );
-      if (totalAmountInput === null) return;
-
-      const totalAmount = Number(totalAmountInput);
-      if (Number.isNaN(totalAmount)) {
-        window.alert("Please enter a valid number.");
-        return;
-      }
-
-      try {
-        await updateTrip(id, { total_amount: totalAmount });
-        await reloadTrips();
-      } catch (error) {
-        console.error("Failed to update trip:", error);
-        window.alert("Failed to update trip.");
-      }
+      currentEditingTripId = id;
+      prefillEditForm(currentTrip);
+      openEditCard();
     }
   });
 

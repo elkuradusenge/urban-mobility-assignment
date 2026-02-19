@@ -93,6 +93,27 @@
   width: fit-content;
 }
 
+.form-actions {
+  align-self: end;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  border: 1px solid #c7d0dc;
+  border-radius: 14px;
+  background: #fff;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
 .trip-table-wrap {
   background: #fff;
   border: 1px solid #d8dee8;
