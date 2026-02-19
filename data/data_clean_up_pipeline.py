@@ -68,15 +68,9 @@ class DataLoader:
     @staticmethod
     def convert_csv_to_parquet():
         """Convert CSV to Parquet for efficient processing"""
-        print("\n" + "="*70)
-        print("STEP 1: DATA CONVERSION (CSV → Parquet)")
-        print("="*70)
         
         if os.path.exists(Config.TRIP_DATA_PARQUET):
-            print(f"✓ Parquet file already exists: {Config.TRIP_DATA_PARQUET}")
             return
-        
-        print(f"Converting {Config.TRIP_DATA_CSV} to Parquet format...")
         
         # Read CSV in chunks for memory efficiency
         chunk_size = 100000
@@ -90,76 +84,45 @@ class DataLoader:
         df = pd.concat(chunks, ignore_index=True)
         df.to_parquet(Config.TRIP_DATA_PARQUET, engine='pyarrow', compression='snappy')
         
-        print(f"✓ Conversion complete: {len(df):,} rows")
-        print(f"  Saved to: {Config.TRIP_DATA_PARQUET}")
     
     @staticmethod
     def load_trip_data():
         """Load trip data from Parquet"""
-        print("\n" + "="*70)
-        print("STEP 2: LOAD TRIP DATA")
-        print("="*70)
         
         if not os.path.exists(Config.TRIP_DATA_PARQUET):
             DataLoader.convert_csv_to_parquet()
         
-        print(f"Loading trip data from: {Config.TRIP_DATA_PARQUET}")
         df = pd.read_parquet(Config.TRIP_DATA_PARQUET)
-        
-        print(f"✓ Loaded {len(df):,} trip records")
-        print(f"  Columns: {list(df.columns)}")
-        print(f"  Memory usage: {df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
         
         return df
     
     @staticmethod
     def load_zone_lookup():
         """Load taxi zone lookup table"""
-        print("\n" + "="*70)
-        print("STEP 3: LOAD TAXI ZONE LOOKUP")
-        print("="*70)
-        
-        print(f"Loading zone lookup from: {Config.ZONE_LOOKUP_CSV}")
         zones = pd.read_csv(Config.ZONE_LOOKUP_CSV)
-        
-        print(f"✓ Loaded {len(zones)} taxi zones")
-        print(f"  Boroughs: {zones['Borough'].unique().tolist()}")
-        print(f"  Service zones: {zones['service_zone'].unique().tolist()}")
         
         return zones
     
     @staticmethod
     def load_zone_geometry():
         """Load taxi zone spatial data (optional)"""
-        print("\n" + "="*70)
-        print("STEP 4: LOAD TAXI ZONE GEOMETRY (OPTIONAL)")
-        print("="*70)
         
         if not HAS_GEOPANDAS:
-            print(f"⚠ Geopandas not installed - skipping spatial data")
             return None
         
         if not os.path.exists(Config.TAXI_ZONES_SHP):
-            print(f"⚠ Shapefile not found: {Config.TAXI_ZONES_SHP}")
             return None
         
         try:
-            print(f"Loading shapefile from: {Config.TAXI_ZONES_SHP}")
             gdf = gpd.read_file(Config.TAXI_ZONES_SHP)
-            print(f"✓ Loaded {len(gdf)} zone geometries")
-            print(f"  CRS: {gdf.crs}")
             return gdf
         except Exception as e:
-            print(f"⚠ Error loading shapefile: {e}")
             return None
     
     @staticmethod
     def integrate_data(trips_df, zones_df):
         """Associate trip data with zone metadata"""
-        print("\n" + "="*70)
-        print("STEP 5: DATA INTEGRATION")
-        print("="*70)
-        
+
         print("Merging trip data with pickup zone information...")
         trips_df = trips_df.merge(
             zones_df,
@@ -193,8 +156,7 @@ class DataLoader:
             trips_df.drop(columns=['LocationID'], inplace=True)
         if 'LocationID_dropoff' in trips_df.columns:
             trips_df.drop(columns=['LocationID_dropoff'], inplace=True)
-        
-        print(f"✓ Integration complete: {len(trips_df):,} records")
+    
         print(f"  New columns: pickup_borough, pickup_zone, dropoff_borough, dropoff_zone")
         
         return trips_df
@@ -211,9 +173,6 @@ class DataCleaner:
     
     def handle_missing_values(self, df):
         """Identify and resolve missing values"""
-        print("\n" + "="*70)
-        print("STEP 6: HANDLE MISSING VALUES")
-        print("="*70)
         
         initial_rows = len(df)
         missing_summary = df.isnull().sum()
@@ -224,7 +183,6 @@ class DataCleaner:
             if missing_summary[col] > 0:
                 print(f"  {col}: {missing_summary[col]} ({missing_pct[col]}%)")
         
-        self.report.append(f"Missing Values Analysis:\n")
         self.report.append(f"Initial rows: {initial_rows:,}\n")
         
         # Strategy 1: Drop rows with missing critical fields
@@ -245,7 +203,6 @@ class DataCleaner:
             median_passengers = df['passenger_count'].median()
             null_count = df['passenger_count'].isnull().sum()
             df['passenger_count'].fillna(median_passengers, inplace=True)
-            print(f"  Filled {null_count} missing passenger_count with median: {median_passengers}")
             self.report.append(f"  Filled {null_count} passenger_count with median: {median_passengers}\n")
         
         # Strategy 3: Fill missing payment-related fields with 0
@@ -259,18 +216,12 @@ class DataCleaner:
                 self.report.append(f"  Filled {null_count} {field} with 0\n")
         
         final_rows = len(df)
-        print(f"✓ Missing value handling complete: {final_rows:,} rows remaining")
         self.report.append(f"Final rows after missing value handling: {final_rows:,}\n\n")
         
         return df
     
     def remove_duplicates(self, df):
         """Identify and remove duplicate records"""
-        print("\n" + "="*70)
-        print("STEP 7: REMOVE DUPLICATES")
-        print("="*70)
-        
-        initial_rows = len(df)
         
         # Define duplicate criteria: same pickup/dropoff time, locations, and fare
         duplicate_cols = ['tpep_pickup_datetime', 'tpep_dropoff_datetime', 
@@ -295,10 +246,7 @@ class DataCleaner:
     
     def detect_outliers(self, df):
         """Identify physical and logical outliers"""
-        print("\n" + "="*70)
-        print("STEP 8: DETECT AND HANDLE OUTLIERS")
-        print("="*70)
-        
+      
         initial_rows = len(df)
         self.report.append("Outlier Detection:\n")
         
@@ -309,8 +257,6 @@ class DataCleaner:
             (df['trip_distance'] > Config.MAX_TRIP_DISTANCE)
         )
         outlier_count = distance_outliers.sum()
-        print(f"   Found {outlier_count} trips with invalid distance")
-        print(f"   Range: {df['trip_distance'].min():.2f} - {df['trip_distance'].max():.2f} miles")
         df = df[~distance_outliers]
         self.report.append(f"  Distance outliers removed: {outlier_count}\n")
         
@@ -321,8 +267,6 @@ class DataCleaner:
             (df['fare_amount'] > Config.MAX_FARE)
         )
         outlier_count = fare_outliers.sum()
-        print(f"   Found {outlier_count} trips with invalid fare")
-        print(f"   Range: ${df['fare_amount'].min():.2f} - ${df['fare_amount'].max():.2f}")
         df = df[~fare_outliers]
         self.report.append(f"  Fare outliers removed: {outlier_count}\n")
         
@@ -349,8 +293,6 @@ class DataCleaner:
             (df['trip_duration_minutes'] > Config.MAX_TRIP_DURATION)
         )
         outlier_count = temporal_outliers.sum()
-        print(f"   Found {outlier_count} trips with invalid duration")
-        print(f"   Range: {df['trip_duration_minutes'].min():.2f} - {df['trip_duration_minutes'].max():.2f} minutes")
         df = df[~temporal_outliers]
         self.report.append(f"  Temporal outliers removed: {outlier_count}\n")
         
@@ -359,14 +301,12 @@ class DataCleaner:
         logical_outliers = df['trip_duration_minutes'] < 0
         outlier_count = logical_outliers.sum()
         if outlier_count > 0:
-            print(f"   Found {outlier_count} trips where dropoff < pickup")
             df = df[~logical_outliers]
             self.report.append(f"  Logical outliers removed: {outlier_count}\n")
         else:
             print(f"   No logical inconsistencies found")
         
         # 6. Total amount validation
-        print("\n6. Total Amount Validation:")
         df['calculated_total'] = (
             df['fare_amount'] + df['extra'] + df['mta_tax'] + 
             df['tip_amount'] + df['tolls_amount'] + 
@@ -414,10 +354,6 @@ class DataNormalizer:
     @staticmethod
     def normalize_timestamps(df):
         """Standardize all timestamp fields"""
-        print("\n" + "="*70)
-        print("STEP 9: NORMALIZE TIMESTAMPS")
-        print("="*70)
-        
         timestamp_cols = ['tpep_pickup_datetime', 'tpep_dropoff_datetime']
         
         for col in timestamp_cols:
@@ -434,18 +370,11 @@ class DataNormalizer:
                     df['pickup_dayofweek'] = df[col].dt.dayofweek  # 0=Monday, 6=Sunday
                     df['pickup_is_weekend'] = df['pickup_dayofweek'].isin([5, 6]).astype(int)
         
-        print(f"✓ Timestamp normalization complete")
-        print(f"  Added temporal features: year, month, day, hour, dayofweek, is_weekend")
-        
         return df
     
     @staticmethod
     def normalize_numeric_fields(df):
         """Standardize numeric fields for database storage"""
-        print("\n" + "="*70)
-        print("STEP 10: NORMALIZE NUMERIC FIELDS")
-        print("="*70)
-        
         # Round numeric fields to appropriate precision
         numeric_precision = {
             'trip_distance': 2,
@@ -481,9 +410,6 @@ class DataNormalizer:
     @staticmethod
     def normalize_categorical_fields(df):
         """Standardize categorical identifiers"""
-        print("\n" + "="*70)
-        print("STEP 11: NORMALIZE CATEGORICAL FIELDS")
-        print("="*70)
         
         # Standardize store_and_fwd_flag
         if 'store_and_fwd_flag' in df.columns:
@@ -521,18 +447,10 @@ class FeatureEngineer:
     @staticmethod
     def create_derived_features(df):
         """Define and create meaningful derived features"""
-        print("\n" + "="*70)
-        print("STEP 12: FEATURE ENGINEERING")
-        print("="*70)
-        
-        print("\nCreating derived features...\n")
-        
+
         # ===================================================================
         # FEATURE 1: Average Speed (mph)
         # ===================================================================
-        print("1. AVERAGE SPEED (mph)")
-        print("   Justification: Measures traffic flow and congestion patterns.")
-        print("   Formula: trip_distance / (trip_duration_minutes / 60)")
         
         df['avg_speed_mph'] = np.where(
             df['trip_duration_minutes'] > 0,
@@ -544,16 +462,9 @@ class FeatureEngineer:
         df['avg_speed_mph'] = df['avg_speed_mph'].clip(upper=80)
         df['avg_speed_mph'] = df['avg_speed_mph'].round(2)
         
-        print(f"   Range: {df['avg_speed_mph'].min():.2f} - {df['avg_speed_mph'].max():.2f} mph")
-        print(f"   Mean: {df['avg_speed_mph'].mean():.2f} mph")
-        print(f"   ✓ Feature created\n")
-        
         # ===================================================================
         # FEATURE 2: Cost Per Mile ($/mile)
         # ===================================================================
-        print("2. COST PER MILE ($/mile)")
-        print("   Justification: Economic efficiency metric for riders and pricing analysis.")
-        print("   Formula: total_amount / trip_distance")
         
         df['cost_per_mile'] = np.where(
             df['trip_distance'] > 0,
@@ -562,17 +473,9 @@ class FeatureEngineer:
         )
         df['cost_per_mile'] = df['cost_per_mile'].round(2)
         
-        print(f"   Range: ${df['cost_per_mile'].min():.2f} - ${df['cost_per_mile'].max():.2f}")
-        print(f"   Mean: ${df['cost_per_mile'].mean():.2f}")
-        print(f"   ✓ Feature created\n")
-        
         # ===================================================================
         # FEATURE 3: Tip Percentage
         # ===================================================================
-        print("3. TIP PERCENTAGE (%)")
-        print("   Justification: Measures customer satisfaction and driver service quality.")
-        print("   Formula: (tip_amount / fare_amount) * 100")
-        
         df['tip_percentage'] = np.where(
             df['fare_amount'] > 0,
             (df['tip_amount'] / df['fare_amount']) * 100,
@@ -580,17 +483,9 @@ class FeatureEngineer:
         )
         df['tip_percentage'] = df['tip_percentage'].clip(upper=100).round(2)
         
-        print(f"   Range: {df['tip_percentage'].min():.2f}% - {df['tip_percentage'].max():.2f}%")
-        print(f"   Mean: {df['tip_percentage'].mean():.2f}%")
-        print(f"   ✓ Feature created\n")
-        
         # ===================================================================
         # FEATURE 4: Time of Day Category
         # ===================================================================
-        print("4. TIME OF DAY CATEGORY")
-        print("   Justification: Captures demand patterns across different times.")
-        print("   Categories: Night(0-6), Morning Rush(6-10), Midday(10-16),")
-        print("               Evening Rush(16-20), Night(20-24)")
         
         def categorize_time_of_day(hour):
             if 0 <= hour < 6:
@@ -606,37 +501,14 @@ class FeatureEngineer:
         
         df['time_of_day'] = df['pickup_hour'].apply(categorize_time_of_day)
         
-        print(f"   Distribution:")
-        for cat, count in df['time_of_day'].value_counts().items():
-            print(f"     {cat}: {count:,} ({count/len(df)*100:.1f}%)")
-        print(f"   ✓ Feature created\n")
-        
         # ===================================================================
         # FEATURE 5: Inter-Borough Trip Flag
         # ===================================================================
-        print("5. INTER-BOROUGH TRIP FLAG")
-        print("   Justification: Identifies trips crossing borough boundaries,")
-        print("                  useful for urban mobility and pricing analysis.")
-        print("   Formula: pickup_borough != dropoff_borough")
         
         df['is_inter_borough'] = (
             df['pickup_borough'] != df['dropoff_borough']
         ).astype(int)
-        
-        inter_borough_count = df['is_inter_borough'].sum()
-        inter_borough_pct = inter_borough_count / len(df) * 100
-        
-        print(f"   Inter-borough trips: {inter_borough_count:,} ({inter_borough_pct:.1f}%)")
-        print(f"   Intra-borough trips: {len(df) - inter_borough_count:,} ({100-inter_borough_pct:.1f}%)")
-        print(f"   ✓ Feature created\n")
-        
-        # ===================================================================
-        # FEATURE 6: Revenue Per Minute ($/min)
-        # ===================================================================
-        print("6. REVENUE PER MINUTE ($/min)")
-        print("   Justification: Driver profitability metric - earnings efficiency.")
-        print("   Formula: total_amount / trip_duration_minutes")
-        
+       
         df['revenue_per_minute'] = np.where(
             df['trip_duration_minutes'] > 0,
             df['total_amount'] / df['trip_duration_minutes'],
@@ -644,18 +516,10 @@ class FeatureEngineer:
         )
         df['revenue_per_minute'] = df['revenue_per_minute'].round(2)
         
-        print(f"   Range: ${df['revenue_per_minute'].min():.2f} - ${df['revenue_per_minute'].max():.2f}")
-        print(f"   Mean: ${df['revenue_per_minute'].mean():.2f}/min")
-        print(f"   ✓ Feature created\n")
-        
-        print("="*70)
-        print(f"✓ Feature engineering complete: 6 derived features created")
-        print("="*70)
-        
         return df
 
 # =====================================================================
-# MAIN PIPELINE EXECUTION
+# PIPELINE EXECUTION
 # =====================================================================
 
 class DataPipeline:
@@ -669,13 +533,7 @@ class DataPipeline:
         os.makedirs(Config.CLEAN_DATA_DIR, exist_ok=True)
     
     def run(self):
-        """Execute the complete data pipeline"""
-        print("\n" + "="*70)
-        print("NYC TAXI DATA PIPELINE")
-        print("="*70)
-        print(f"Start Time: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        print("="*70)
-        
+    
         try:
             # ====== DATA INTEGRATION ======
             loader = DataLoader()
@@ -683,7 +541,6 @@ class DataPipeline:
             # Load raw data
             trips_df = loader.load_trip_data()
             zones_df = loader.load_zone_lookup()
-            geo_df = loader.load_zone_geometry()
             
             # Integrate data sources
             trips_df = loader.integrate_data(trips_df, zones_df)
@@ -710,23 +567,9 @@ class DataPipeline:
             self.cleaner.save_report()
             self.print_summary(trips_df)
             
-            # ====== COMPLETION ======
-            end_time = datetime.now()
-            duration = (end_time - self.start_time).total_seconds()
-            
-            print("\n" + "="*70)
-            print("PIPELINE COMPLETE")
-            print("="*70)
-            print(f"Start Time:    {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-            print(f"End Time:      {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
-            print(f"Duration:      {duration:.2f} seconds")
-            print(f"Final Records: {len(trips_df):,}")
-            print("="*70)
-            
             return trips_df
             
         except Exception as e:
-            print(f"\n❌ ERROR: Pipeline failed with exception:")
             print(f"   {str(e)}")
             import traceback
             traceback.print_exc()
@@ -740,46 +583,13 @@ class DataPipeline:
         
         # Save integrated trip data as Parquet (efficient format)
         print(f"\n1. Saving integrated trip data...")
-        trips_df.to_parquet(Config.INTEGRATED_DATA, engine='pyarrow', compression='snappy')
-        file_size = os.path.getsize(Config.INTEGRATED_DATA) / 1024**2
-        print(f"   ✓ Saved to: {Config.INTEGRATED_DATA}")
-        print(f"   Size: {file_size:.2f} MB")
-        
-        # Save cleaned trip data as CSV (for compatibility)
-        print(f"\n2. Saving clean trip data (CSV)...")
+        trips_df.to_parquet(Config.INTEGRATED_DATA, engine='pyarrow', compression='snappy')        
         trips_df.to_csv(Config.CLEAN_TRIP_DATA, index=False)
-        file_size = os.path.getsize(Config.CLEAN_TRIP_DATA) / 1024**2
-        print(f"   ✓ Saved to: {Config.CLEAN_TRIP_DATA}")
-        print(f"   Size: {file_size:.2f} MB")
         
-        # Save zone data
-        print(f"\n3. Saving zone data...")
         zones_df.to_csv(Config.ZONE_DATA, index=False)
-        print(f"   ✓ Saved to: {Config.ZONE_DATA}")
-        
-        print(f"\n✓ All results saved successfully")
-    
+     
     def print_summary(self, df):
         """Print pipeline summary statistics"""
-        print("\n" + "="*70)
-        print("DATA SUMMARY")
-        print("="*70)
-        
-        print(f"\nDataset Overview:")
-        print(f"  Total Records: {len(df):,}")
-        print(f"  Total Columns: {len(df.columns)}")
-        print(f"  Memory Usage: {df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
-        
-        print(f"\nTrip Statistics:")
-        print(f"  Avg Distance: {df['trip_distance'].mean():.2f} miles")
-        print(f"  Avg Duration: {df['trip_duration_minutes'].mean():.2f} minutes")
-        print(f"  Avg Fare: ${df['fare_amount'].mean():.2f}")
-        print(f"  Avg Speed: {df['avg_speed_mph'].mean():.2f} mph")
-        
-        print(f"\nEconomic Metrics:")
-        print(f"  Avg Cost/Mile: ${df['cost_per_mile'].mean():.2f}")
-        print(f"  Avg Tip: ${df['tip_amount'].mean():.2f} ({df['tip_percentage'].mean():.1f}%)")
-        print(f"  Avg Revenue/Minute: ${df['revenue_per_minute'].mean():.2f}")
         
         print(f"\nTop Pickup Boroughs:")
         for borough, count in df['pickup_borough'].value_counts().head(5).items():
