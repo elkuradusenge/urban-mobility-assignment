@@ -13,22 +13,21 @@ const findByName = (name) => {
 };
 
 const create = (payment) => {
-  const insertStatement = db.prepare("INSERT INTO payments (name) VALUES (?)");
-  const executionResult = insertStatement.run(payment.name);
-  return executionResult.lastInsertRowid;
+  const insertStatement = db.prepare("INSERT INTO payments (name) VALUES (?) RETURNING *");
+  return insertStatement.get(payment.name);
 };
 
 const update = (id, payment) => {
   const keys = Object.keys(payment);
-  if (keys.length === 0) return;
+  if (keys.length === 0) return db.prepare("SELECT * FROM payments WHERE id = ?").get(id);
 
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
   const values = keys.map((key) => payment[key]);
 
   const updateStatement = db.prepare(
-    `UPDATE payments SET ${setClause} WHERE id = ?`,
+    `UPDATE payments SET ${setClause} WHERE id = ? RETURNING *`,
   );
-  updateStatement.run(...values, id);
+  return updateStatement.get(...values, id);
 };
 
 const deleteById = (id) => {

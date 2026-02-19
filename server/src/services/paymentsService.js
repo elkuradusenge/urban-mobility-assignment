@@ -13,8 +13,7 @@ const createPayment = (payment) => {
   if (existing) {
     throw new Error(`Payment method ${payment.name} already exists`);
   }
-  const id = paymentsRepository.create(payment);
-  return { ...payment, id };
+  return paymentsRepository.create(payment);
 };
 
 const updatePayment = (
@@ -31,8 +30,7 @@ const updatePayment = (
     }
   }
 
-  paymentsRepository.update(id, paymentData);
-  return { ...existing, ...paymentData };
+  return paymentsRepository.update(id, paymentData);
 };
 
 const deletePayment = (id) => {

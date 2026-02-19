@@ -90,3 +90,4 @@ Thumbs.db
 *.xls
 
 node_modules
+database.db

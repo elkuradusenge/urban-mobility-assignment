@@ -14,27 +14,26 @@ const findByEmail = (email) => {
 
 const create = (vendor) => {
   const insertStatement = db.prepare(
-    "INSERT INTO vendors (name, email, phone_number) VALUES (?, ?, ?)",
+    "INSERT INTO vendors (name, email, phone_number) VALUES (?, ?, ?) RETURNING *",
   );
-  const executionResult = insertStatement.run(
+  return insertStatement.get(
     vendor.name,
     vendor.email,
     vendor.phone_number,
   );
-  return executionResult.lastInsertRowid;
 };
 
 const update = (id, vendor) => {
   const keys = Object.keys(vendor);
-  if (keys.length === 0) return;
+  if (keys.length === 0) return db.prepare("SELECT * FROM vendors WHERE id = ?").get(id);
 
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
   const values = keys.map((key) => vendor[key]);
 
   const updateStatement = db.prepare(
-    `UPDATE vendors SET ${setClause} WHERE id = ?`,
+    `UPDATE vendors SET ${setClause} WHERE id = ? RETURNING *`,
   );
-  updateStatement.run(...values, id);
+  return updateStatement.get(...values, id);
 };
 
 const deleteById = (id) => {
