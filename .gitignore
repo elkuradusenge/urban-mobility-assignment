@@ -86,7 +86,7 @@ Thumbs.db
 *~.nib
 
 # Large output files
-*.xlsx
+# *.xlsx
 *.xls
 
 node_modules
