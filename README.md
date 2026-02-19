@@ -45,7 +45,7 @@
 ```
 
 ## Important links
-- Link to YouTube video: TBD
+- [TransBook video recording Demo](https://www.youtube.com/watch?v=BBzY2wuxFaw)
 - [Team participation sheet]( https://docs.google.com/spreadsheets/d/11-xA8QXkXfPswp3CypwRaMWXdrGt6T2iPRYr3ock8tI/edit?usp=sharing)
 
 ## Database schemas
