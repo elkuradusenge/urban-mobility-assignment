@@ -55,71 +55,31 @@
             </form>
           </section>
 
+          <section id="edit-location-card" class="add-location-card hidden">
+            <div class="add-location-header">
+              <h2>Edit Location</h2>
+              <button id="close-edit-location" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="edit-location-form" class="location-form">
+              <label>
+                Name
+                <input type="text" name="name" placeholder="Location name" required>
+              </label>
+              <label>
+                Region
+                <input type="text" name="region" placeholder="Region" required>
+              </label>
+              <div class="form-actions">
+                <button id="cancel-edit-location" class="btn-secondary" type="button">Cancel</button>
+                <button class="btn-primary form-submit" type="submit">Save</button>
+              </div>
+            </form>
+          </section>
+
           <section id="locations-grid" class="locations-grid">
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Kigali</h3>
-                  <p>Kigali City</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
-            </article>
-
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Butare</h3>
-                  <p>Southern Province</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
-            </article>
-
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Gisenyi</h3>
-                  <p>Western Province</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
-            </article>
-
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Musanze</h3>
-                  <p>Northern Province</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
-            </article>
-
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Cyangugu</h3>
-                  <p>Western Province</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
-            </article>
-
-            <article class="location-card">
-              <div class="location-left">
-                <div class="location-icon">L</div>
-                <div>
-                  <h3>Rwamagana</h3>
-                  <p>Eastern Province</p>
-                </div>
-              </div>
-              <button class="action-btn danger js-delete-location" type="button">Delete</button>
+            <article class="location-card location-card--message">
+              <p>Loading locations...</p>
             </article>
           </section>
         </section>

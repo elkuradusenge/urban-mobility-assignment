@@ -4,6 +4,111 @@
   gap: 14px;
 }
 
+.payments-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.payment-count {
+  margin: 0;
+  color: #5d789d;
+  font-size: 16px;
+}
+
+.btn-primary {
+  border: 0;
+  border-radius: 14px;
+  background: #1d4a8f;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #163a72;
+}
+
+.add-payment-card {
+  background: #fff;
+  border: 1px solid #d8dee8;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.add-payment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.add-payment-header h2 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.btn-close {
+  border: 0;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #1f2937;
+}
+
+.payment-form {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  gap: 14px 16px;
+  align-items: end;
+}
+
+.payment-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.payment-form input {
+  border: 1px solid #c7d0dc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 16px;
+  color: #0f172a;
+}
+
+.form-submit {
+  align-self: end;
+  width: fit-content;
+}
+
+.form-actions {
+  align-self: end;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  border: 1px solid #c7d0dc;
+  border-radius: 14px;
+  background: #fff;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
 .payment-filters {
   display: flex;
   align-items: center;
@@ -56,29 +161,58 @@
   border-bottom: 0;
 }
 
-.payment-status {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.payment-status.paid {
-  color: #16a34a;
-  background: #daf5e5;
-}
-
-.payment-status.pending {
-  color: #d97706;
-  background: #fee9c5;
-}
-
 .payment-table tbody tr.hidden {
   display: none;
 }
 
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: #1d4a8f;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 0;
+}
+
+.icon-btn.danger {
+  color: #ef4444;
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.icon-btn .edit-icon path,
+.icon-btn .trash-icon path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hidden {
+  display: none;
+}
+
 @media (max-width: 900px) {
+  .payments-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .payment-form {
+    grid-template-columns: 1fr;
+  }
+
   .payment-table th,
   .payment-table td {
     font-size: 14px;

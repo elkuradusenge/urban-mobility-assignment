@@ -31,10 +31,46 @@
 
       <main class="main-content">
         <section class="payments-panel">
-          <div class="payment-filters" role="tablist" aria-label="Payment status filter">
+          <div class="payments-toolbar">
+            <p id="payment-count" class="payment-count">0 payment methods total</p>
+            <button id="add-payment-toggle" class="btn-primary" type="button">+ Add Payment</button>
+          </div>
+
+          <section id="add-payment-card" class="add-payment-card hidden">
+            <div class="add-payment-header">
+              <h2>New Payment Method</h2>
+              <button id="close-add-payment" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="add-payment-form" class="payment-form">
+              <label>
+                Payment Name
+                <input type="text" name="name" placeholder="e.g. Visa" required>
+              </label>
+              <button class="btn-primary form-submit" type="submit">Add Payment</button>
+            </form>
+          </section>
+
+          <section id="edit-payment-card" class="add-payment-card hidden">
+            <div class="add-payment-header">
+              <h2>Edit Payment Method</h2>
+              <button id="close-edit-payment" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="edit-payment-form" class="payment-form">
+              <label>
+                Payment Name
+                <input type="text" name="name" placeholder="e.g. Visa" required>
+              </label>
+              <div class="form-actions">
+                <button id="cancel-edit-payment" class="btn-secondary" type="button">Cancel</button>
+                <button class="btn-primary form-submit" type="submit">Save</button>
+              </div>
+            </form>
+          </section>
+
+          <div class="payment-filters" role="tablist" aria-label="Payment filter">
             <button class="filter-btn active" type="button" data-filter="all">All</button>
-            <button class="filter-btn" type="button" data-filter="paid">Paid</button>
-            <button class="filter-btn" type="button" data-filter="pending">Pending</button>
           </div>
 
           <div class="payment-table-wrap">
@@ -42,61 +78,13 @@
               <thead>
                 <tr>
                   <th>Payment ID</th>
-                  <th>Trip ID</th>
-                  <th>Vendor</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>Status</th>
+                  <th>Payment Method</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="payment-table-body">
-                <tr data-status="paid">
-                  <td>#1</td>
-                  <td>#1</td>
-                  <td>TransRwanda</td>
-                  <td>5,000 RWF</td>
-                  <td>2025-01-15</td>
-                  <td><span class="payment-status paid">Paid</span></td>
-                </tr>
-                <tr data-status="pending">
-                  <td>#2</td>
-                  <td>#2</td>
-                  <td>Volcano Express</td>
-                  <td>7,500 RWF</td>
-                  <td>2025-01-18</td>
-                  <td><span class="payment-status pending">Pending</span></td>
-                </tr>
-                <tr data-status="paid">
-                  <td>#3</td>
-                  <td>#3</td>
-                  <td>Lake Shuttle</td>
-                  <td>4,000 RWF</td>
-                  <td>2025-01-20</td>
-                  <td><span class="payment-status paid">Paid</span></td>
-                </tr>
-                <tr data-status="paid">
-                  <td>#4</td>
-                  <td>#4</td>
-                  <td>TransRwanda</td>
-                  <td>6,000 RWF</td>
-                  <td>2025-02-01</td>
-                  <td><span class="payment-status paid">Paid</span></td>
-                </tr>
-                <tr data-status="pending">
-                  <td>#5</td>
-                  <td>#5</td>
-                  <td>Volcano Express</td>
-                  <td>7,500 RWF</td>
-                  <td>2025-02-05</td>
-                  <td><span class="payment-status pending">Pending</span></td>
-                </tr>
-                <tr data-status="pending">
-                  <td>#6</td>
-                  <td>#6</td>
-                  <td>Highland Movers</td>
-                  <td>5,500 RWF</td>
-                  <td>2025-02-10</td>
-                  <td><span class="payment-status pending">Pending</span></td>
+                <tr>
+                  <td colspan="3">Loading payment methods...</td>
                 </tr>
               </tbody>
             </table>
