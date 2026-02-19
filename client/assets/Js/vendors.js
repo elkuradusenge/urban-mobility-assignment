@@ -30,6 +30,17 @@
   let vendorsCache = [];
   let currentEditingVendorId = null;
 
+  const ratingFilter = document.querySelector("#rating-filter");
+  const searchVendor = document.querySelector("#search-vendor");
+  const sortVendors = document.querySelector("#sort-vendors");
+  const resetVendorFilters = document.querySelector("#reset-vendor-filters");
+
+  const filters = {
+    rating: "all",
+    search: "",
+    sort: "name-asc"
+  };
+
   if (
     !addVendorToggle ||
     !addVendorCard ||
@@ -40,13 +51,61 @@
     !cancelEditVendor ||
     !editVendorForm ||
     !vendorsGrid ||
-    !vendorCount
+    !vendorCount ||
+    !ratingFilter ||
+    !searchVendor ||
+    !sortVendors ||
+    !resetVendorFilters
   ) {
     return;
   }
 
   const updateVendorCount = () => {
     vendorCount.textContent = `${vendorsCache.length} vendors total`;
+  };
+
+  const matchesFilters = (vendor) => {
+    const searchTerm = filters.search.toLowerCase().trim();
+    if (searchTerm && !vendor.name.toLowerCase().includes(searchTerm)) {
+      return false;
+    }
+
+    if (filters.rating !== "all") {
+      if (!vendor.rating) return false;
+      const rating = parseFloat(vendor.rating);
+      if (filters.rating === "4+") {
+        if (rating < 4) return false;
+      } else if (filters.rating === "3-4") {
+        if (rating < 3 || rating >= 4) return false;
+      } else if (filters.rating === "below-3") {
+        if (rating >= 3) return false;
+      }
+    }
+
+    return true;
+  };
+
+  const sortVendorsArray = (vendors) => {
+    const sorted = [...vendors];
+    const sortBy = filters.sort;
+
+    if (sortBy === "name-asc") {
+      sorted.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === "name-desc") {
+      sorted.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortBy === "rating-high") {
+      sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (sortBy === "rating-low") {
+      sorted.sort((a, b) => (a.rating || 0) - (b.rating || 0));
+    }
+
+    return sorted;
+  };
+
+  const applyFiltersAndSort = () => {
+    const filtered = vendorsCache.filter(matchesFilters);
+    const sorted = sortVendorsArray(filtered);
+    renderVendors(sorted);
   };
 
   const resolveEndpointBase = () => {
@@ -202,7 +261,7 @@
         return { ...vendor, trips: count };
       });
       vendorsCache = vendorTripCounts;
-      renderVendors(vendorsCache);
+      applyFiltersAndSort();
       updateVendorCount();
     })
   };
@@ -331,6 +390,31 @@
       prefillEditVendorForm(vendor);
       openEditCard();
     }
+  });
+
+  ratingFilter.addEventListener("change", () => {
+    filters.rating = ratingFilter.value;
+    applyFiltersAndSort();
+  });
+
+  searchVendor.addEventListener("input", () => {
+    filters.search = searchVendor.value;
+    applyFiltersAndSort();
+  });
+
+  sortVendors.addEventListener("change", () => {
+    filters.sort = sortVendors.value;
+    applyFiltersAndSort();
+  });
+
+  resetVendorFilters.addEventListener("click", () => {
+    filters.rating = "all";
+    filters.search = "";
+    filters.sort = "name-asc";
+    ratingFilter.value = "all";
+    searchVendor.value = "";
+    sortVendors.value = "name-asc";
+    applyFiltersAndSort();
   });
 
   const init = async () => {

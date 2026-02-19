@@ -27,9 +27,122 @@
   let tripsCache = [];
   let currentEditingTripId = null;
 
+  const filters = {
+    status: "all",
+    fare: "all",
+    distance: "all",
+    location: "",
+  };
+  let currentSort = "recent";
+
+  const statusFilter = document.querySelector("#status-filter");
+  const fareFilter = document.querySelector("#fare-filter");
+  const distanceFilter = document.querySelector("#distance-filter");
+  const locationFilter = document.querySelector("#location-filter");
+  const sortTrips = document.querySelector("#sort-trips");
+  const resetBtn = document.querySelector("#reset-filters");
+
   if (!tripTableBody || !tripCount) {
     return;
   }
+
+  const matchesFilters = (trip) => {
+    const status = resolveStatus(trip).toLowerCase();
+    if (filters.status !== "all" && status !== filters.status.toLowerCase()) {
+      return false;
+    }
+
+    const fare = Number(trip.total_amount || 0);
+    if (filters.fare !== "all") {
+      if (filters.fare === "0-5000" && (fare < 0 || fare > 5000)) return false;
+      if (filters.fare === "5000-10000" && (fare < 5000 || fare > 10000)) return false;
+      if (filters.fare === "10000-20000" && (fare < 10000 || fare > 20000)) return false;
+      if (filters.fare === "20000+" && fare < 20000) return false;
+    }
+
+    const distance = Number(trip.trip_distance || 0);
+    if (filters.distance !== "all") {
+      if (filters.distance === "0-5" && (distance < 0 || distance > 5)) return false;
+      if (filters.distance === "5-10" && (distance < 5 || distance > 10)) return false;
+      if (filters.distance === "10-20" && (distance < 10 || distance > 20)) return false;
+      if (filters.distance === "20+" && distance < 20) return false;
+    }
+
+    if (filters.location) {
+      const search = filters.location.toLowerCase();
+      const from = (trip.pickup_location?.zone || "").toLowerCase();
+      const to = (trip.dropoff_location?.zone || "").toLowerCase();
+      if (!from.includes(search) && !to.includes(search)) return false;
+    }
+
+    return true;
+  };
+
+  const sortTripsArray = (trips) => {
+    const sorted = [...trips];
+    switch (currentSort) {
+      case "oldest":
+        return sorted.sort((a, b) => (a.id || 0) - (b.id || 0));
+      case "fare-high":
+        return sorted.sort((a, b) => (b.total_amount || 0) - (a.total_amount || 0));
+      case "fare-low":
+        return sorted.sort((a, b) => (a.total_amount || 0) - (b.total_amount || 0));
+      case "distance-high":
+        return sorted.sort((a, b) => (b.trip_distance || 0) - (a.trip_distance || 0));
+      case "distance-low":
+        return sorted.sort((a, b) => (a.trip_distance || 0) - (b.trip_distance || 0));
+      case "recent":
+      default:
+        return sorted.sort((a, b) => (b.id || 0) - (a.id || 0));
+    }
+  };
+
+  const applyFiltersAndSort = () => {
+    const filtered = tripsCache.filter(matchesFilters);
+    const sorted = sortTripsArray(filtered);
+    renderTrips(sorted);
+  };
+
+  statusFilter?.addEventListener("change", (e) => {
+    filters.status = e.target.value;
+    applyFiltersAndSort();
+  });
+
+  fareFilter?.addEventListener("change", (e) => {
+    filters.fare = e.target.value;
+    applyFiltersAndSort();
+  });
+
+  distanceFilter?.addEventListener("change", (e) => {
+    filters.distance = e.target.value;
+    applyFiltersAndSort();
+  });
+
+  locationFilter?.addEventListener("input", (e) => {
+    filters.location = e.target.value;
+    applyFiltersAndSort();
+  });
+
+  sortTrips?.addEventListener("change", (e) => {
+    currentSort = e.target.value;
+    applyFiltersAndSort();
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    filters.status = "all";
+    filters.fare = "all";
+    filters.distance = "all";
+    filters.location = "";
+    currentSort = "recent";
+    
+    if (statusFilter) statusFilter.value = "all";
+    if (fareFilter) fareFilter.value = "all";
+    if (distanceFilter) distanceFilter.value = "all";
+    if (locationFilter) locationFilter.value = "";
+    if (sortTrips) sortTrips.value = "recent";
+    
+    applyFiltersAndSort();
+  });
 
   const openAddCard = () => {
     editTripCard?.classList.add("hidden");
@@ -162,7 +275,7 @@
     if (!trips.length) {
       tripTableBody.innerHTML = `
         <tr>
-          <td colspan="6">No trips found.</td>
+          <td colspan="7">No trips found.</td>
         </tr>
       `;
       return;
@@ -173,6 +286,7 @@
         const from = trip.pickup_location?.zone || `Location #${trip.pickup_location_id}`;
         const to = trip.dropoff_location?.zone || `Location #${trip.dropoff_location_id}`;
         const vendor = trip.vendor?.name || `Vendor #${trip.vendor_id}`;
+        const distance = Number(trip.trip_distance || 0).toFixed(2);
         const price = formatCurrency(trip.total_amount);
         const status = resolveStatus(trip);
         const statusClass = getStatusClass(status);
@@ -182,6 +296,7 @@
             <td>${from}</td>
             <td>${to}</td>
             <td>${vendor}</td>
+            <td>${distance} mi</td>
             <td>${price}</td>
             <td><span class="${statusClass}">${status}</span></td>
             <td>
@@ -204,7 +319,7 @@
     tripCount.textContent = "0 trips total";
     tripTableBody.innerHTML = `
       <tr>
-        <td colspan="6">Failed to load trips. Make sure server runs on http://localhost:3000.</td>
+        <td colspan="7">Failed to load trips. Make sure server runs on http://localhost:3000.</td>
       </tr>
     `;
   };
