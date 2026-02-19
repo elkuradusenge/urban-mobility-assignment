@@ -47,3 +47,10 @@
 ## Important links
 - Link to YouTube video: TBD
 - [Team participation sheet]( https://docs.google.com/spreadsheets/d/11-xA8QXkXfPswp3CypwRaMWXdrGt6T2iPRYr3ock8tI/edit?usp=sharing)
+
+## Database schemas
+<img width="1862" height="1196" alt="drawSQL-image-export-2026-02-19" src="https://github.com/user-attachments/assets/5653596f-e50c-44cf-8542-14110fe41fdc" />
+
+## System diagrams
+<img width="855" height="217" alt="diagram-export-2-19-2026-9_31_57-PM" src="https://github.com/user-attachments/assets/3674a4d8-27af-43a0-91a2-f1d16aa962a7" />
+
