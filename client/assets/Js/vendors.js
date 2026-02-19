@@ -197,8 +197,6 @@
   const loadVendors = async () => {
     const vendors = await getVendors();
    await getTrips().then((trips) => {
-
-      // get vendor trip counts by getting all tribs and counting how many trips each vendor has
       const vendorTripCounts = vendors.map((vendor) => {
         const count = trips.filter((trip) => trip.vendor_id === vendor.id).length;
         return { ...vendor, trips: count };
